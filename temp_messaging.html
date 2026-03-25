@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-dim": "#10141a",
+            "on-secondary-fixed": "#23005b",
+            "on-background": "#dfe2eb",
+            "surface-container-highest": "#31353c",
+            "inverse-on-surface": "#2d3137",
+            "error": "#ffb4ab",
+            "surface-tint": "#00daf3",
+            "secondary": "#d1bcff",
+            "on-secondary": "#3c0090",
+            "secondary-container": "#7000ff",
+            "on-surface": "#dfe2eb",
+            "tertiary-container": "#ffbde5",
+            "surface": "#10141a",
+            "on-tertiary-fixed": "#3b002f",
+            "primary-fixed-dim": "#00daf3",
+            "inverse-primary": "#006875",
+            "surface-container-lowest": "#0a0e14",
+            "surface-container-high": "#262a31",
+            "outline-variant": "#3b494c",
+            "on-primary-fixed": "#001f24",
+            "surface-bright": "#353940",
+            "primary-container": "#00e5ff",
+            "on-primary-container": "#00626e",
+            "background": "#10141a",
+            "surface-container-low": "#181c22",
+            "on-tertiary-fixed-variant": "#86006f",
+            "tertiary-fixed": "#ffd8ed",
+            "secondary-fixed": "#e9ddff",
+            "on-primary-fixed-variant": "#004f58",
+            "secondary-fixed-dim": "#d1bcff",
+            "surface-variant": "#31353c",
+            "primary-fixed": "#9cf0ff",
+            "inverse-surface": "#dfe2eb",
+            "on-error": "#690005",
+            "tertiary-fixed-dim": "#ffade1",
+            "surface-container": "#1c2026",
+            "error-container": "#93000a",
+            "tertiary": "#ffe6f2",
+            "primary": "#c3f5ff",
+            "on-tertiary-container": "#a60089",
+            "on-surface-variant": "#bac9cc",
+            "on-secondary-fixed-variant": "#5700c9",
+            "on-error-container": "#ffdad6",
+            "outline": "#849396",
+            "on-tertiary": "#5f004e",
+            "on-secondary-container": "#ddcdff",
+            "on-primary": "#00363d"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-panel {
+      background: rgba(28, 32, 38, 0.6);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(195, 245, 255, 0.05);
+      border-left: 1px solid rgba(195, 245, 255, 0.05);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3b494c; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00daf3; }
+  </style>
+</head>
+<body class="bg-surface-dim text-on-surface font-body selection:bg-primary/30">
+<!-- Shared Component: TopAppBar -->
+<header class="fixed top-0 z-50 w-full flex justify-between items-center px-6 h-16 bg-[#10141a]/80 backdrop-blur-xl bg-gradient-to-b from-[#353940]/10 to-transparent shadow-[0_8px_32px_0_rgba(0,229,255,0.08)]">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#c3f5ff] uppercase font-headline">KINETIC_OBSERVATORY</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-colors font-headline tracking-tight" href="#">Studio</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-colors font-headline tracking-tight" href="#">Assets</a>
+<a class="text-[#c3f5ff] border-b-2 border-[#c3f5ff] pb-1 font-headline tracking-tight" href="#">Team</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-colors font-headline tracking-tight" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-[#c3f5ff]/10 rounded-lg transition-all text-[#c3f5ff]">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#c3f5ff]/10 rounded-lg transition-all text-[#c3f5ff]">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile Avatar" data-alt="close-up portrait of a professional male designer with a modern aesthetic in a high-tech studio setting with blue lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfIK35jj1HGjhur0xXW6wtAtuksKPjIlj-a5C_N__8unbU49XVLzQn6rEOi-ZV7sQDvJgSF_M5sSHeUxSZ4fANBnxaI2Yt1IqW8G4QQy3gWIS64UL9vqToTMl8lUT95y793A59Z8bvAD7KCDV9yL1-AOXFQvxGGdFPpgMI7h31CQ4cLFcaRJm_gRoBJn72OeGTNAnoanid6691oOoPKUV-QoQT_EdUAugGPMLyoPukn5yCmYZJFpp048WVDPdu8luSERLJPmuxmQ"/>
+</div>
+</div>
+</header>
+<!-- Shared Component: SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#0a0e14] border-r border-[#353940]/20 flex flex-col py-8 z-40">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="view_in_ar">view_in_ar</span>
+</div>
+<span class="text-[#d1bcff] font-headline font-bold text-sm tracking-tight">DATA_STUDIO_V1</span>
+</div>
+<p class="text-[10px] uppercase tracking-widest text-[#dfe2eb]/40 font-medium">Active Session</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 px-6 py-3 text-[#dfe2eb]/40 hover:text-[#dfe2eb]/80 font-medium uppercase tracking-widest text-[10px] hover:bg-[#353940]/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="view_in_ar">view_in_ar</span>
+<span>Viewport</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 bg-[#c3f5ff]/10 text-[#c3f5ff] border-r-2 border-[#c3f5ff] font-medium uppercase tracking-widest text-[10px] active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span>
+<span>Messages</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#dfe2eb]/40 hover:text-[#dfe2eb]/80 font-medium uppercase tracking-widest text-[10px] hover:bg-[#353940]/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="group">group</span>
+<span>Collaborators</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#dfe2eb]/40 hover:text-[#dfe2eb]/80 font-medium uppercase tracking-widest text-[10px] hover:bg-[#353940]/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="history">history</span>
+<span>Timeline</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#dfe2eb]/40 hover:text-[#dfe2eb]/80 font-medium uppercase tracking-widest text-[10px] hover:bg-[#353940]/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="inventory_2">inventory_2</span>
+<span>Archive</span>
+</a>
+</nav>
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full py-2 bg-primary-container text-on-primary-container text-[10px] font-bold uppercase tracking-widest rounded transition-all active:scale-95">
+        New Simulation
+      </button>
+<div class="pt-6 border-t border-outline-variant/20 space-y-4">
+<a class="flex items-center gap-4 text-[#dfe2eb]/40 hover:text-[#dfe2eb]/80 uppercase tracking-widest text-[10px]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="help_outline">help_outline</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-4 text-[#dfe2eb]/40 hover:text-[#dfe2eb]/80 uppercase tracking-widest text-[10px]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+<span>Terminal</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area: Collaboration & Messaging Interface -->
+<main class="ml-64 mt-16 p-8 min-h-screen grid grid-cols-12 gap-6 items-start">
+<!-- Left Column: Active Team Members (Asymmetric HUD) -->
+<div class="col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline text-lg font-bold tracking-tight text-primary uppercase">Active_Unit</h2>
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary text-[10px] font-bold rounded-full">4 ONLINE</span>
+</div>
+<div class="space-y-4">
+<!-- Team Member Card -->
+<div class="group relative p-3 rounded-lg hover:bg-surface-container-high transition-all border border-transparent hover:border-primary/20">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Team Member" class="w-10 h-10 rounded-lg grayscale group-hover:grayscale-0 transition-all border border-outline-variant" data-alt="Portrait of a creative technologist with glasses in a dark moody office environment with cyan highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwGkdwkTDYzYwzvLjFVcyCd_hPo00O8jVpQyOxFiiGm-gbWQAYIjQ_VqW8IRJunjvJr8HGe8jYr_djmYs7lGJkj5s7cG3nu4JSZfNzIgvM8L-6fHOinsrxNGQxZ6X_GSNASJRnLBep9v3dmo9-INQKA9yqAoXrWIJX98EvFLRPm00RPiGZHtJe0vnXARp940Puv9fcHO16KH2bpi_RawLpdWczA8iQpM4uQ4xmWcmZ06OYp5slacFehYrm9Yj35JLcKeE5LcvL8w"/>
+<div class="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold font-headline tracking-wide uppercase text-on-surface truncate">Elias.Vance</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Lead Architect</p>
+</div>
+</div>
+<div class="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex-1 py-1.5 bg-surface-container-highest text-[10px] font-bold uppercase tracking-tighter text-primary border border-primary/20 hover:bg-primary/10 transition-colors">Message</button>
+<button class="px-2 py-1.5 bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+</button>
+</div>
+</div>
+<!-- Team Member Card -->
+<div class="group relative p-3 rounded-lg hover:bg-surface-container-high transition-all border border-transparent hover:border-primary/20">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Team Member" class="w-10 h-10 rounded-lg grayscale group-hover:grayscale-0 transition-all border border-outline-variant" data-alt="Woman with short hair looking focused in a high-tech lab setting with violet ambient light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9GpOmDQYHQBN7raIzLSzrJssITYmsfiyBb76b2F6A_KiC3xG6-T9qp-ojrq7VX0P1sTid_CHP_eTF_7XBq8HE8qbeN8D6dwMSDMxHy4YqzDmyGvcATb7ZMcruWcwnu0JgOhqPaaIBi4o4BA5C1Re9rcoDSVMkPeimNVMBFZ1aw9lCsJJD0C1HIzMzgL_e13DqUHp1xBVHgCv7_G9IzbZ4rk4TJmQJp3Irlptms4G0rjknTeGojTEqdOYTwofAp37nUWuKqAKsHw"/>
+<div class="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold font-headline tracking-wide uppercase text-on-surface truncate">Sarah.Chen</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Data Scientist</p>
+</div>
+</div>
+<div class="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex-1 py-1.5 bg-primary-container text-on-primary-container text-[10px] font-bold uppercase tracking-tighter">Interact</button>
+<button class="px-2 py-1.5 bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span>
+</button>
+</div>
+</div>
+<!-- Team Member Card -->
+<div class="group relative p-3 rounded-lg hover:bg-surface-container-high transition-all border border-transparent hover:border-primary/20">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Team Member" class="w-10 h-10 rounded-lg grayscale group-hover:grayscale-0 transition-all border border-outline-variant" data-alt="Portrait of a young male engineer in a dark tech-focused studio with cinematic rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDwolJGFzEw-8jHvBUorPMsNQxRREAhA0_MPex9LNz-5nB8iuSe7dy1H3qjQebXs74rbTRE5E4P-A4jq09jgVP_KSEHE_xVJqWni27S1x1RTo4AzjTcs3GDjZjiXX6pPud3lzuZNbG4OmrvlXRFjRpl57Mxku3pV0qQ3Wsbv6af2Bie95vwdrKKl_jsntfs8h7LxHDj1iHoT7_g4It4TNEfgqAVQ7hVbBgCPMwdoyQzWEo5JX85WWuNMy4Onwf4AEXc18dpDshDw"/>
+<div class="absolute -bottom-1 -right-1 w-3 h-3 bg-surface-variant rounded-full border-2 border-surface"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold font-headline tracking-wide uppercase text-on-surface-variant truncate">Marcus.Russo</p>
+<p class="text-[10px] text-on-surface-variant/50 font-medium italic">Away - 5m</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Export Context HUD -->
+<div class="glass-panel p-6 rounded-xl border border-outline-variant/10">
+<h3 class="font-headline text-[10px] font-extrabold tracking-[0.2em] text-on-surface-variant uppercase mb-4">Pipeline_Status</h3>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-lg border-l-2 border-secondary mb-3">
+<div class="space-y-1">
+<p class="text-[10px] text-secondary font-bold uppercase">Exporting Simulation</p>
+<p class="text-[8px] text-on-surface-variant">V-Ray 6.2 Render Engine</p>
+</div>
+<span class="text-xs font-headline font-bold text-secondary">84%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[84%]"></div>
+</div>
+</div>
+</div>
+<!-- Right Column: Active Chat Thread (The Kinetic Observatory Viewport) -->
+<div class="col-span-12 lg:col-span-8 xl:col-span-9 h-[calc(100vh-160px)] flex flex-col">
+<div class="glass-panel flex-1 rounded-t-xl overflow-hidden flex flex-col border border-outline-variant/10">
+<!-- Thread Header -->
+<div class="px-8 py-5 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-low/50">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="forum">forum</span>
+</div>
+<div>
+<h1 class="font-headline text-lg font-bold tracking-tight text-on-surface uppercase">Studio_Broadcast_v4</h1>
+<p class="text-[10px] text-on-surface-variant tracking-wider">COLLABORATION_STREAM // PROJECT_ALPHA</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-surface bg-surface-container-highest overflow-hidden">
+<img alt="Avatar" data-alt="Close up of a female professional portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoEBudNH-H34QS1qdVn6dWTx_nGbN3Mme7Gba9YKaJwlFRxfPvGrKySI-PfXq_GothCZcEcavYpehdTYl5bQpFKcRDeXhKKBqOJ67PmmNlfuc38y3hvM-Jw5pUP-ogqDJfBE9aygW67DxmQ_EWVlNlyzGZDqjXAxTpZvaX4APjpfepeTOJfxcYhz9OKuuP30gNOEMXAhEwaI1xOGKU6WVZMKpoRLY4HX5wwEzBxzeNFsH5DAZvNiL-jYb367CEolSlKfmDQxOBIg"/>
+</div>
+<div class="w-6 h-6 rounded-full border border-surface bg-surface-container-highest flex items-center justify-center text-[8px] font-bold text-primary">+2</div>
+</div>
+<button class="p-2 hover:bg-surface-container-highest transition-colors rounded-lg">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Chat Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8 scroll-smooth">
+<!-- Message: Recipient -->
+<div class="flex items-start gap-4 max-w-[80%]">
+<img alt="Avatar" class="w-8 h-8 rounded border border-outline-variant mt-1" data-alt="Male professional headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvNoznOkt89T847LAgs50kOm9m_Zzzceke7M62irrwj-iqpOU4eqnJiPU_QGV8YnhwqT_pAWj_ytfG-pIDezC5dWUicugHs1O5yMLs4LALfnhGmDI4B7FXDkAQYOR3VoqTm9T0EDAcLpzVewq-oQBGgTa-R3-MgVVP0sJTF45cjy3cyam7M9JNW3YFc_o_FeK5XcZvaHC2s_VftizdV2l72s4PMNO8X48ejc19mERPfKpvqm1ExnEwfZXmTztWZWKEqfIeDq99cw"/>
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold font-headline text-primary uppercase">Elias.Vance</span>
+<span class="text-[8px] text-on-surface-variant font-medium">14:22:04</span>
+</div>
+<div class="bg-surface-container p-4 rounded-xl rounded-tl-none border border-outline-variant/10">
+<p class="text-sm text-on-surface leading-relaxed">The lighting vectors on the central monolith seem to be clipping through the volumetric fog. Can we check the global illumination pass? <span class="text-secondary font-mono">#GI_DEBUG</span></p>
+</div>
+</div>
+</div>
+<!-- Message: Attachment/Data Point -->
+<div class="flex items-start gap-4 max-w-[85%] ml-12">
+<div class="bg-surface-container-highest p-4 rounded-xl border border-primary/20 w-full lg:w-96">
+<div class="flex items-center gap-4 mb-3">
+<div class="w-12 h-12 rounded bg-surface-container-lowest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="image">image</span>
+</div>
+<div class="flex-1">
+<p class="text-[10px] font-bold uppercase text-on-surface">Vector_Clipping_Ref.exr</p>
+<p class="text-[8px] text-on-surface-variant uppercase">42.4 MB // RAW_DATA</p>
+</div>
+<button class="p-2 bg-primary/10 rounded-lg text-primary hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</button>
+</div>
+<div class="w-full h-24 rounded bg-surface-container-lowest overflow-hidden">
+<img alt="Technical Render" class="w-full h-full object-cover opacity-60" data-alt="Abstract 3D technical render showing geometric blue and purple shapes with light rays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtZg6RNnEISQVsKbS1sbynNvXipmcjV6kN3q6sf-ebtNC55fwRxJirVtazRpPQNmbDeqagPQ1ZSPS64XaH3qUJpmIgcwtddkJK2W8b1Th-bBiq41e_q0YP1i5Hqwj-3hfJMx6Opmy8KE-J8u6_aImIsFh9mwvwatHouMP-igPuxwls5dVC9B1Bgw6I7JhYSLeqwTK5IYqDxb_FRWQ6ujPQjiNiGk9yI5msE0ABiR7BMGJYN6fY4ki5-hvWGrs-e93QpTbBX72rgA"/>
+</div>
+</div>
+</div>
+<!-- Message: Sender (Me) -->
+<div class="flex flex-row-reverse items-start gap-4 max-w-[80%] ml-auto text-right">
+<div class="w-8 h-8 rounded border border-primary/50 bg-primary/10 flex items-center justify-center mt-1">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="person">person</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-end gap-3">
+<span class="text-[8px] text-on-surface-variant font-medium">14:24:58</span>
+<span class="text-[10px] font-bold font-headline text-secondary uppercase">Me</span>
+</div>
+<div class="bg-primary/10 p-4 rounded-xl rounded-tr-none border border-primary/30">
+<p class="text-sm text-on-surface leading-relaxed text-left">On it. I'll adjust the bias on the voxel grid. Rendering the new frame now. Should be ready in 120 cycles.</p>
+</div>
+<div class="flex justify-end gap-1">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="text-[8px] text-primary uppercase font-bold tracking-tighter">System_Confirmed</span>
+</div>
+</div>
+</div>
+<!-- Message: Recipient 2 -->
+<div class="flex items-start gap-4 max-w-[80%]">
+<img alt="Avatar" class="w-8 h-8 rounded border border-outline-variant mt-1" data-alt="Female professional headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFLN-N-yp7xOdLaXNM_8Q-caaGiOqCa-pjWs0gsMHGLsh_wZIDN0j_RtZyBZ7KhA42RlXVfQ5e_khAaaKg1MmINH9V3IkND2ze2oH2jK7UCXxuHpzhTfYl7bfzhPzc7wxZY0tpaimcUqF8zsHV--1xkpuKlW9g7MK1U7n-f2eh12Ww6LDC7zj26UQnBr3KT0FcVHtZzS8emHURV_lzv4tOsR8lSW2ZD6mLuB2ZracGklI1JlzDrI5cH-4Ab7DjbvuBouIq2sF-fw"/>
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold font-headline text-primary uppercase">Sarah.Chen</span>
+<span class="text-[8px] text-on-surface-variant font-medium">14:26:12</span>
+</div>
+<div class="bg-surface-container p-4 rounded-xl rounded-tl-none border border-outline-variant/10">
+<p class="text-sm text-on-surface leading-relaxed italic text-on-surface-variant">Typing simulation parameters...</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Section -->
+<div class="p-6 bg-surface-container-low border-t border-outline-variant/20">
+<div class="flex items-center gap-4 bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-2 px-4 focus-within:border-primary/50 transition-all">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-headline tracking-wide placeholder:text-on-surface-variant/40 uppercase" placeholder="TRANSMIT MESSAGE TO BROADCAST..." type="text"/>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="mood">mood</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+</button>
+<div class="w-px h-6 bg-outline-variant/30 mx-2"></div>
+<button class="bg-primary-container text-on-primary-container px-5 py-2 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+                Send
+                <span class="material-symbols-outlined text-sm" data-icon="send">send</span>
+</button>
+</div>
+</div>
+<div class="mt-3 flex gap-4 px-2">
+<p class="text-[9px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" data-icon="terminal">terminal</span>
+              CTRL + ENTER TO TRANSMIT
+            </p>
+<p class="text-[9px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" data-icon="lock">lock</span>
+              ENCRYPTED_STREAM_V3
+            </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- HUD Floating Overlay Element (Decorative but functional aesthetic) -->
+<div class="fixed bottom-8 right-8 pointer-events-none opacity-50 hidden xl:block">
+<div class="p-4 glass-panel border border-primary/20 rounded-lg">
+<div class="flex items-center gap-4">
+<div class="space-y-1">
+<p class="text-[8px] font-bold text-primary uppercase">Latency</p>
+<p class="text-xs font-headline font-bold">14ms</p>
+</div>
+<div class="w-px h-8 bg-outline-variant/20"></div>
+<div class="space-y-1">
+<p class="text-[8px] font-bold text-secondary uppercase">Bitrate</p>
+<p class="text-xs font-headline font-bold">450Mbps</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

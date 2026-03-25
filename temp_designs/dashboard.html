@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Observatory | AI 3D Visualization</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-on-surface": "#2d3137",
+            "on-surface": "#dfe2eb",
+            "secondary-container": "#7000ff",
+            "surface-bright": "#353940",
+            "on-secondary-fixed": "#23005b",
+            "on-error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#5700c9",
+            "surface-tint": "#00daf3",
+            "tertiary-fixed-dim": "#ffade1",
+            "error": "#ffb4ab",
+            "surface-container-high": "#262a31",
+            "on-tertiary": "#5f004e",
+            "on-primary-fixed": "#001f24",
+            "on-primary-container": "#00626e",
+            "on-tertiary-container": "#a60089",
+            "surface-container-lowest": "#0a0e14",
+            "surface-variant": "#31353c",
+            "tertiary-fixed": "#ffd8ed",
+            "secondary-fixed": "#e9ddff",
+            "on-surface-variant": "#bac9cc",
+            "primary-container": "#00e5ff",
+            "on-secondary-container": "#ddcdff",
+            "on-error": "#690005",
+            "tertiary-container": "#ffbde5",
+            "secondary": "#d1bcff",
+            "on-primary": "#00363d",
+            "on-tertiary-fixed": "#3b002f",
+            "on-secondary": "#3c0090",
+            "secondary-fixed-dim": "#d1bcff",
+            "surface-dim": "#10141a",
+            "background": "#10141a",
+            "surface": "#10141a",
+            "inverse-surface": "#dfe2eb",
+            "tertiary": "#ffe6f2",
+            "on-background": "#dfe2eb",
+            "primary-fixed": "#9cf0ff",
+            "primary-fixed-dim": "#00daf3",
+            "on-tertiary-fixed-variant": "#86006f",
+            "inverse-primary": "#006875",
+            "on-primary-fixed-variant": "#004f58",
+            "outline-variant": "#3b494c",
+            "surface-container-highest": "#31353c",
+            "error-container": "#93000a",
+            "surface-container-low": "#181c22",
+            "primary": "#c3f5ff",
+            "surface-container": "#1c2026",
+            "outline": "#849396"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      backdrop-filter: blur(20px);
+      background: rgba(16, 20, 26, 0.6);
+    }
+    .glass-card {
+      backdrop-filter: blur(12px);
+      background: rgba(53, 57, 64, 0.1);
+      border: 1px solid rgba(195, 245, 255, 0.05);
+    }
+    .glass-card:hover {
+      border: 1px solid rgba(195, 245, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-screen flex flex-col py-8 bg-[#0a0e14] border-r border-[#353940]/20 w-64 z-[60] font-['Inter'] text-xs uppercase tracking-widest">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-lg" style="font-variation-settings: 'FILL' 1;">deployed_code</span>
+</div>
+<div>
+<div class="text-[#c3f5ff] font-bold tracking-normal text-sm normal-case">Project Alpha</div>
+<div class="text-[#dfe2eb]/40 text-[10px] tracking-widest uppercase">V3.2 Active</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#c3f5ff]/10 text-[#c3f5ff] border-r-4 border-[#c3f5ff] font-bold transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="database">database</span>
+<span>Data Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="3d_rotation">3d_rotation</span>
+<span>3D Editor</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="group">group</span>
+<span>Collaborate</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full py-3 bg-primary-container text-on-primary-container font-bold rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95 text-[11px]">
+<span class="material-symbols-outlined text-sm">add</span>
+        New Visualization
+      </button>
+<div class="pt-6 border-t border-[#353940]/20 space-y-2">
+<a class="flex items-center gap-3 px-4 py-2 text-[#dfe2eb]/40 hover:text-[#dfe2eb] transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="help">help</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#dfe2eb]/40 hover:text-[#dfe2eb] transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="pl-64 flex flex-col min-h-screen">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-64 z-50 h-16 bg-[#10141a]/80 backdrop-blur-xl flex justify-between items-center px-6 shadow-[0_0_20px_rgba(0,229,255,0.05)] bg-gradient-to-b from-[#353940]/10 to-transparent">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#c3f5ff] font-['Space_Grotesk']">Kinetic Observatory</span>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-surface-container-lowest border-none rounded-lg pl-10 pr-4 py-2 text-sm w-64 focus:ring-1 focus:ring-primary transition-all text-on-surface placeholder:text-outline/50" placeholder="Search experiments..." type="text"/>
+</div>
+<nav class="hidden md:flex items-center gap-6 font-['Space_Grotesk'] tracking-tight text-sm">
+<a class="text-[#c3f5ff] border-b-2 border-[#c3f5ff] pb-1" href="#">Projects</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all" href="#">Templates</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#dfe2eb]/60 hover:bg-[#353940]/30 rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-[#dfe2eb]/60 hover:bg-[#353940]/30 rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="portrait of a creative professional in a high-tech studio environment with soft blue ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6aUjcSUHRrE8rdSG_hn21MYJ1aFS8f3oOlV5byBm2GAL4xjpq62K0vomu8RkN4xCY2Ox8gYYZEXd8BUzzztyNY8drlR-RE6pD0PvwIfe_RDIFuWlwbxGDbaxodj-nOdJEIekQV9JDYRA1yB9GVoHlHy85fjpXJaVvMCB8vXSdCSQOwikg_6o0i6fkDqQrCU6ukmQgX8bClfOwbSBNy0fY12Gxmbgno7iT4oF5ORqu4Z29ClUttj_Tcwu8w_8sJTSb9I46XIeIsw"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="mt-16 p-8 space-y-12">
+<!-- Welcome Hero Section -->
+<section class="relative overflow-hidden rounded-2xl p-10 bg-surface-container-low border border-outline-variant/10">
+<div class="relative z-10 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/20 text-secondary text-[10px] font-bold uppercase tracking-widest mb-4">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            System Online: 42 Active Nodes
+          </div>
+<h1 class="text-5xl font-headline font-bold text-on-surface leading-tight mb-4 tracking-tighter">
+            Visualize the <span class="text-primary">Invisible</span>.
+          </h1>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+            Harness the power of AI to transform multi-dimensional data into immersive 3D landscapes. Your latest simulation is ready for review.
+          </p>
+<div class="flex gap-4">
+<button class="px-6 py-3 bg-primary-container text-on-primary-container font-bold rounded-lg flex items-center gap-2 hover:brightness-110 transition-all">
+              Launch Data Studio
+              <span class="material-symbols-outlined text-lg">rocket_launch</span>
+</button>
+<button class="px-6 py-3 border border-outline-variant text-on-surface font-medium rounded-lg hover:bg-surface-bright transition-all">
+              View Analytics
+            </button>
+</div>
+</div>
+<!-- Decorative Background Element -->
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-30 pointer-events-none">
+<div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent"></div>
+<img alt="3D abstract visualization" class="w-full h-full object-cover mix-blend-screen" data-alt="abstract 3D wireframe topography with glowing cyan lines on a deep black background, cinematic depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATI4aAknA5V0_d5QJf-47Aueia8o8aKIYcoj_48vv53QFJODGffj-Lvc1GPts5zZ9qYRZe_lWh0vjI5p_BVqkcIXqLqrf1q1t3NBFZQhVzWX_nhmKbUpJG-YvneTxlSfogzzhqEegcEWhCYjm05KS1TXNW_kkSnYHMMafPQfeAmpYlqEVKmaxmeDSDem5pbD1_xXrhhu_pYeKvPCOHdYEUQx0tKwuJg677sWiYCWTF6OcYEoMCRBNxi1MPTN4v98O6T9mG6nusNA"/>
+</div>
+</section>
+<!-- Quick Start Templates (Bento Grid Style) -->
+<section>
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-2xl font-headline font-bold text-primary tracking-tight">Quick Start Templates</h2>
+<p class="text-on-surface-variant text-sm mt-1">Deploy pre-configured visualization architectures.</p>
+</div>
+<button class="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+            Browse all templates <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Template Card 1 -->
+<div class="glass-card group p-6 rounded-xl flex flex-col justify-between h-64 cursor-pointer transition-all hover:-translate-y-1">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-3xl">bubble_chart</span>
+</div>
+<span class="text-[10px] text-outline uppercase tracking-widest">Statistical</span>
+</div>
+<div>
+<h3 class="text-xl font-headline font-bold mb-2">Scatter Plots</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2">High-density 3D cluster mapping for multivariate datasets and outlier detection.</p>
+</div>
+<div class="pt-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[10px] text-primary font-bold">DEPLOY TEMPLATE</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-all">bolt</span>
+</div>
+</div>
+<!-- Template Card 2 -->
+<div class="glass-card group p-6 rounded-xl flex flex-col justify-between h-64 cursor-pointer transition-all hover:-translate-y-1 bg-gradient-to-br from-[#10141a] to-[#1c2026]">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-secondary/10 text-secondary">
+<span class="material-symbols-outlined text-3xl">hub</span>
+</div>
+<span class="text-[10px] text-outline uppercase tracking-widest">Relational</span>
+</div>
+<div>
+<h3 class="text-xl font-headline font-bold mb-2">Network Graphs</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2">Visualize complex interdependencies and neural node architectures in physical space.</p>
+</div>
+<div class="pt-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[10px] text-secondary font-bold">DEPLOY TEMPLATE</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-all">bolt</span>
+</div>
+</div>
+<!-- Template Card 3 -->
+<div class="glass-card group p-6 rounded-xl flex flex-col justify-between h-64 cursor-pointer transition-all hover:-translate-y-1">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-tertiary/10 text-tertiary">
+<span class="material-symbols-outlined text-3xl">map</span>
+</div>
+<span class="text-[10px] text-outline uppercase tracking-widest">Geospatial</span>
+</div>
+<div>
+<h3 class="text-xl font-headline font-bold mb-2">Geographic Maps</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2">Project global data layers onto interactive 3D globes with terrain extrusion.</p>
+</div>
+<div class="pt-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[10px] text-tertiary font-bold">DEPLOY TEMPLATE</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-all">bolt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Projects Grid -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-2xl font-headline font-bold text-on-surface tracking-tight">Recent Projects</h2>
+<div class="h-px flex-1 bg-outline-variant/20"></div>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-sm">grid_view</span>
+</button>
+<button class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-sm">list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Project Item 1 -->
+<div class="group relative bg-surface-container-high rounded-xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all">
+<div class="aspect-video w-full overflow-hidden">
+<img alt="3D Project Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="macro close-up of a futuristic circuit board with glowing blue power lines and complex geometric patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhG5RRbCxkFSFsX1K4nXcXvmk4wcpD0VRMqSJrwaHLutsX1jHQRy7l117zH_-ThuEp4CVWjWEbhePRzMrx-f67s2JvM5bQ9cFjfqdl5hUjaju-Vf7aCkPROWXluptRIYuDxLcWxxYDMv7tDy1OqLf04TWqOozM7TFOi4RiL6bU_q6QHNQbZSbldvCSBPZZVtg-Qg0cTGzdQb8xgJfMJvK12SLkNVlOvLqMCgcp5Q1Lhf56wBpYWkokWr-Df45s5YF9JdqHnQ4vdw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-60"></div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline font-bold text-on-surface truncate">Neural Stream V2</h4>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[9px] font-bold">STABLE</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-4">Last edited 2h ago</p>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-background bg-surface-bright flex items-center justify-center overflow-hidden">
+<img alt="team" class="w-full h-full object-cover" data-alt="professional male portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-QfuWm85Zfvw1lOvAbJXqynXul1l0EBUuK7P7dhN4JNAFJiydJzr0IPHluTTkXVkU_RuM_Q7x1fXjThkWf_aCnqZZ-ugTz5fgrmwy_YmOU6tNP3tDQd3V12PqP94isz8KqF-2QtVTUvfVYUhvr4pmNCHH-TBjLCfnbNZ52ieeT_avELsBJ1VOE-gkLmT24yWEuAXtnovvbWhAJvyMyL2oPsXs7mT2P_FTGjBSyuG5UJEQDIxVeLEheHD6zHj9skFiKqeGyQxHTQ"/>
+</div>
+<div class="w-6 h-6 rounded-full border border-background bg-surface-bright flex items-center justify-center overflow-hidden text-[8px] font-bold text-on-surface">
+                  +3
+                </div>
+</div>
+</div>
+</div>
+<!-- Project Item 2 -->
+<div class="group relative bg-surface-container-high rounded-xl overflow-hidden border border-outline-variant/10 hover:border-secondary/30 transition-all">
+<div class="aspect-video w-full overflow-hidden">
+<img alt="3D Project Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="digital representation of the earth at night with glowing data connectivity lines across continents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARUbdIbqMuE2A7yxpdKvai_JevwKkyHytKwbftLZH1N8k6brmXPdfxY0HkLK3_Qg6G9MnGXVqmJkxzwPlR9r-KYQlo1ZK_skqveix6Eaa9bedzeUk8y9aLCJ-9WTOpO1eF37pgwlrWDAeVmQpS7AadKdr3d3xDF6_STPClRgfQXjxAQXm2_9e1OShJI6-TN2wAf8uKToJMTb8tAcmctfwC5W01lZUUo2ahOYpOxxNyEM4oUXqm83-wOVico_HkpW_KNOWu_5kmTg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-60"></div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline font-bold text-on-surface truncate">Global Logistics 3D</h4>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-[9px] font-bold">RENDERING</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-4">Last edited 5h ago</p>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-background bg-surface-bright flex items-center justify-center overflow-hidden">
+<img alt="team" class="w-full h-full object-cover" data-alt="professional female portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXlrCwyySCjON8AT1sKvQAGlMX1ZdOTk3iIvot62yYWRr9pTHRK_KxM7sjmikNLLpHDsEHgKVIOx4IQ2H1zlpu57R-gWXbLhSWp8z0psf7v3d1UF57gxs8NXug2gIBrq8qt9qYX7QAfSUksQV8vOTCF_ue5Pq7F8G6mqR6KiRDR4_v5LkOzl82sJ0lAVzcdt-pL47N5r62nIj1fhG7bORBYxH51bzgDtwdO43M6PhPlNE6gNIaj3DDwAjOuKDzlkkLS5oa_WGgqQ"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Item 3 -->
+<div class="group relative bg-surface-container-high rounded-xl overflow-hidden border border-outline-variant/10 hover:border-tertiary/30 transition-all">
+<div class="aspect-video w-full overflow-hidden">
+<img alt="3D Project Preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="abstract close up of semiconductor microchip architecture with glowing pink and orange light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8y0mzqQkcuAcSunZAPi7BN-gbJ1Z88a6IboqfVONe8SNQns4WcfrCRi8COSplDhXKmPDdcjfML1nqS4qYATVcj5q3tHf2FJKJfh7z7QPih8NHMASzFnaQe9IxmpH9MUEHjKNMGKnuUbjJklk1kJKJ2e_P5qLqFYtrUmtyZermHBTyO6A-h-XKC9KeNi0isDu1d7QitJrREDLW4G3JJYnbec0zV6qTaoXDLeR9kAhDSC-j2SIadA6fQYQDmwCF_9Eo5Arv7uO_gw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-60"></div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline font-bold text-on-surface truncate">Quantum Bit Map</h4>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary text-[9px] font-bold">DRAFT</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-4">Last edited yesterday</p>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-background bg-surface-bright flex items-center justify-center overflow-hidden text-[8px] font-bold text-on-surface">
+                  JD
+                </div>
+</div>
+</div>
+</div>
+<!-- Project Item 4 - Empty State / Create New -->
+<div class="group relative bg-transparent rounded-xl border-2 border-dashed border-outline-variant/30 hover:border-primary/50 transition-all flex flex-col items-center justify-center min-h-[220px] cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">add</span>
+</div>
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface">New Experiment</span>
+</div>
+</div>
+</section>
+<!-- Data Density Table Section -->
+<section class="glass-panel rounded-xl border border-outline-variant/10 overflow-hidden">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h3 class="font-headline font-bold text-lg">System Health &amp; Live Feeds</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+               Compute: 84%
+             </div>
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+               Memory: 4.2TB
+             </div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label uppercase tracking-widest border-b border-outline-variant/5">
+<th class="px-6 py-4 font-semibold">Instance ID</th>
+<th class="px-6 py-4 font-semibold">Status</th>
+<th class="px-6 py-4 font-semibold">Uptime</th>
+<th class="px-6 py-4 font-semibold">AI Confidence</th>
+<th class="px-6 py-4 font-semibold">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-surface-bright/50 transition-all">
+<td class="px-6 py-4 font-mono text-primary">NODE-992-AX</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded bg-green-500/10 text-green-400 border border-green-500/20 text-[10px]">OPERATIONAL</span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">142h 12m</td>
+<td class="px-6 py-4">
+<div class="w-24 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[98%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright/50 transition-all">
+<td class="px-6 py-4 font-mono text-primary">NODE-410-KL</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-[10px]">SYNCING</span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">12h 04m</td>
+<td class="px-6 py-4">
+<div class="w-24 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[45%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright/50 transition-all">
+<td class="px-6 py-4 font-mono text-primary">NODE-007-ZZ</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 text-[10px]">STANDBY</span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">0h 00m</td>
+<td class="px-6 py-4">
+<div class="w-24 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline w-[0%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Observatory | Templates Browser</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#23005b",
+              "surface-bright": "#353940",
+              "surface": "#10141a",
+              "tertiary-container": "#ffbde5",
+              "inverse-primary": "#006875",
+              "on-primary-fixed": "#001f24",
+              "tertiary": "#ffe6f2",
+              "outline-variant": "#3b494c",
+              "outline": "#849396",
+              "on-primary": "#00363d",
+              "on-primary-container": "#00626e",
+              "error-container": "#93000a",
+              "tertiary-fixed-dim": "#ffade1",
+              "error": "#ffb4ab",
+              "on-primary-fixed-variant": "#004f58",
+              "surface-variant": "#31353c",
+              "primary-fixed-dim": "#00daf3",
+              "secondary-fixed": "#e9ddff",
+              "primary-container": "#00e5ff",
+              "on-secondary-fixed-variant": "#5700c9",
+              "on-tertiary": "#5f004e",
+              "on-secondary": "#3c0090",
+              "surface-dim": "#10141a",
+              "surface-container-high": "#262a31",
+              "on-tertiary-container": "#a60089",
+              "on-error": "#690005",
+              "tertiary-fixed": "#ffd8ed",
+              "surface-container": "#1c2026",
+              "on-tertiary-fixed-variant": "#86006f",
+              "on-surface": "#dfe2eb",
+              "secondary": "#d1bcff",
+              "on-tertiary-fixed": "#3b002f",
+              "primary": "#c3f5ff",
+              "inverse-on-surface": "#2d3137",
+              "surface-container-lowest": "#0a0e14",
+              "on-surface-variant": "#bac9cc",
+              "primary-fixed": "#9cf0ff",
+              "secondary-container": "#7000ff",
+              "background": "#10141a",
+              "on-secondary-container": "#ddcdff",
+              "on-background": "#dfe2eb",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#00daf3",
+              "inverse-surface": "#dfe2eb",
+              "surface-container-low": "#181c22",
+              "surface-container-highest": "#31353c",
+              "secondary-fixed-dim": "#d1bcff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-panel {
+        background: rgba(16, 20, 26, 0.6);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(195, 245, 255, 0.1);
+        border-left: 1px solid rgba(195, 245, 255, 0.1);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<header class="fixed top-0 z-50 w-full h-16 flex justify-between items-center px-6 bg-[#10141a]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)] docked full-width">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#c3f5ff] drop-shadow-[0_0_8px_rgba(195,245,255,0.5)] font-['Space_Grotesk']">Kinetic Observatory</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-['Space_Grotesk'] tracking-tight text-sm uppercase text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-colors" href="#">Projects</a>
+<a class="font-['Space_Grotesk'] tracking-tight text-sm uppercase text-[#c3f5ff] border-b-2 border-[#c3f5ff] pb-1" href="#">Templates</a>
+<a class="font-['Space_Grotesk'] tracking-tight text-sm uppercase text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#c3f5ff] text-sm">search</span>
+<input class="bg-[#0a0e14] border-none rounded-lg pl-10 pr-4 py-2 text-xs w-64 focus:ring-1 focus:ring-primary-container outline-none transition-all" placeholder="Search Templates..." type="text"/>
+</div>
+<button class="p-2 text-[#c3f5ff] hover:bg-[#c3f5ff]/10 rounded-lg transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#c3f5ff] hover:bg-[#c3f5ff]/10 rounded-lg transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#c3f5ff]/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional creative designer in a dark tech-focused environment with subtle cyan rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD_WCjcQLeU4rWML7NwgFHw4OgIBzkwnRFFVwuhkurHw2Cf7ZoG0KTYxUaD9oewX-Gb5mdlTzDxsfPeej6hE68H99KdIuxITaw6dRTjd7vXKqo0sW2GK-LDizN9M4pbSSf3bs1FMkMaeMqJx-mbMhlHf6j0o2uAa4brYp6GvQSfrQd8E_2OwVpcRPGyRKCyLsnmaS5ASWog3T14nZWprKo3kNEXXbMizaPrry0uTyqJrTNbcTayS3mNzaiKjzvaQejDm3fBf4eCw"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen pt-16">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col border-r border-[#353940]/20 bg-[#0a0e14] docked left-0 h-[calc(100vh-64px)] w-64 sticky top-16">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div>
+<div class="text-[#c3f5ff] font-bold font-['Inter'] text-sm">Project Alpha</div>
+<div class="text-[#dfe2eb]/50 text-[10px] uppercase tracking-widest font-medium">Active Session</div>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 mb-8 hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Asset</span>
+</button>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 text-[#dfe2eb]/50 px-4 py-3 hover:bg-[#353940]/30 font-['Inter'] text-xs font-medium hover:text-[#d1bcff] transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-[#dfe2eb]/50 px-4 py-3 hover:bg-[#353940]/30 font-['Inter'] text-xs font-medium hover:text-[#d1bcff] transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Data Studio</span>
+</a>
+<a class="flex items-center gap-3 bg-[#c3f5ff]/10 text-[#c3f5ff] border-r-4 border-[#c3f5ff] px-4 py-3 font-['Inter'] text-xs font-medium" href="#">
+<span class="material-symbols-outlined">3d_rotation</span>
+<span>3D Editor</span>
+</a>
+<a class="flex items-center gap-3 text-[#dfe2eb]/50 px-4 py-3 hover:bg-[#353940]/30 font-['Inter'] text-xs font-medium hover:text-[#d1bcff] transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Collaborate</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 space-y-1">
+<a class="flex items-center gap-3 text-[#dfe2eb]/50 px-4 py-3 hover:bg-[#353940]/30 font-['Inter'] text-xs font-medium hover:text-[#d1bcff] transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 text-[#dfe2eb]/50 px-4 py-3 hover:bg-[#353940]/30 font-['Inter'] text-xs font-medium hover:text-[#d1bcff] transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 bg-surface p-6 lg:p-10 overflow-y-auto">
+<div class="max-w-7xl mx-auto">
+<!-- Hero Section -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="text-5xl font-headline font-bold text-on-surface tracking-tighter mb-2">Templates</h1>
+<p class="text-on-surface-variant max-w-xl text-sm leading-relaxed">
+                            Deploy pre-configured 3D environments and data pipelines. Switch between architectural frameworks to accelerate your visualization workflow.
+                        </p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-lg bg-surface-container-high border border-outline-variant/30 text-xs font-medium text-on-surface hover:bg-surface-bright transition-colors">Recent</button>
+<button class="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container text-xs font-bold hover:opacity-90 transition-colors">Marketplace</button>
+</div>
+</header>
+<!-- Filter HUD -->
+<div class="mb-10 flex flex-wrap items-center gap-3 p-1 bg-surface-container-lowest rounded-xl w-fit">
+<button class="px-6 py-2 rounded-lg bg-surface-container-highest text-primary text-xs font-bold transition-all">All Templates</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant text-xs font-medium hover:text-on-surface transition-all">Statistical</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant text-xs font-medium hover:text-on-surface transition-all">Relational</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant text-xs font-medium hover:text-on-surface transition-all">Geospatial</button>
+</div>
+<!-- Template Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Template Card 1 -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all duration-300">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="abstract 3D visualization of complex network data points glowing in electric cyan and violet against a deep obsidian background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIkxU5FIbZK7fpaUmysKcnUKc6Ipzk2bMhlD9Lcz9Rp1JTTtLGubTv5OxsHbylDBgrfc_4tXpUrlqNPPp3LPpvGKdhX2oGEpMr4V3tzaxnDvB9W21HYS1Q7IceIhkseIwQOvRNv4ZdPhGL9WoNRsDly4v7bxFdKxgyCvPXy5RWH85sibnF-haG00Bjv0JdFyIUGIftvjl8Ed4dL90HcLcBTVEMEbuL6yHLQMtc6_wLUOjy-E036R2wer16bdLvpcNAoftpCJHloQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-60"></div>
+<div class="absolute top-4 left-4 bg-primary/20 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-primary uppercase tracking-widest border border-primary/30">Statistical</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-xl font-bold text-on-surface">Neural Flux Density</h3>
+<span class="material-symbols-outlined text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors">bookmark</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6 flex-1">
+                                High-frequency stochastic modeling with real-time particle feedback. Optimized for financial market volatility and neural network analysis.
+                            </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="text-[10px] bg-secondary-container/20 text-secondary-container px-2 py-0.5 rounded border border-secondary-container/30">Cuda-Accelerated</span>
+<span class="text-[10px] bg-surface-bright text-on-surface-variant px-2 py-0.5 rounded">V4 Pipeline</span>
+</div>
+<button class="w-full py-3 bg-surface-container-highest group-hover:bg-primary-container text-on-surface group-hover:text-on-primary-container font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                                Deploy Template
+                            </button>
+</div>
+</div>
+<!-- Template Card 2 -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all duration-300">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="futuristic 3D world map showing luminous data streams connecting global hubs with glowing blue and white highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvRP02hy9bsGRenEO8j0GjcK6fBDHc37YE8VVxQx2bSPE4BZvsYSvvqG3DTPMvGH8nwUWECs7g3D5BkzH8kHxA8sSKcy_px-JqfvkPELtKGDY6znVXLBPr509Su8um7uTq_lEyFPcrsK2A01aF4vA2zV6sLqk6QraqcpVihT7xrnyEv68U-2ZBPAGBzoanzZ81LutKTsndhB1HHkh5Lr1WRCPQn0xIsMjOT05b0Rt35F9GTo9D929NtqPZWdKLEf2w_LBqpQDtnQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-60"></div>
+<div class="absolute top-4 left-4 bg-tertiary-container/20 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-tertiary uppercase tracking-widest border border-tertiary/30">Geospatial</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-xl font-bold text-on-surface">Orbital Node Mesh</h3>
+<span class="material-symbols-outlined text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors">bookmark</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6 flex-1">
+                                Global supply chain visualizer featuring heat-mapped logistics hubs and real-time satellite telemetry integration.
+                            </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="text-[10px] bg-secondary-container/20 text-secondary-container px-2 py-0.5 rounded border border-secondary-container/30">GeoJSON Ready</span>
+<span class="text-[10px] bg-surface-bright text-on-surface-variant px-2 py-0.5 rounded">Lidar Support</span>
+</div>
+<button class="w-full py-3 bg-surface-container-highest group-hover:bg-primary-container text-on-surface group-hover:text-on-primary-container font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                                Deploy Template
+                            </button>
+</div>
+</div>
+<!-- Template Card 3 -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all duration-300">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="microscopic view of glowing digital crystalline structures forming a complex relational database matrix with neon cyan accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWVmWi8NAY3I3VUtpicg8B4IbjPLJ7jslJl8qHMMxM5WJXDZY3aUDlKYw1LxWK18AtNlRrTAwZwmJ0X3rIu6gxCEcMLUx2M8eVG6PPfda7emHUemIm7u3JH6JYmSE3Rx_iojGQbBEmMW9zJo5INRq4Azb0GgUvLQTekblqUEoFSuof57wbktn_zjk1j_lYBOqy-pz7mnZiy7bWnwP5Po3Z0ksIpicmriJgF6WKkOBnQ2T0fUTkVhzjuLJt-ABdFvZKIRKi6ihgfA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-60"></div>
+<div class="absolute top-4 left-4 bg-secondary-container/20 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-secondary uppercase tracking-widest border border-secondary/30">Relational</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-xl font-bold text-on-surface">Kinetic Graph Theory</h3>
+<span class="material-symbols-outlined text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors">bookmark</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6 flex-1">
+                                Force-directed node clusters for mapping massive social interaction datasets or intricate software architecture dependencies.
+                            </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="text-[10px] bg-secondary-container/20 text-secondary-container px-2 py-0.5 rounded border border-secondary-container/30">Vector-Based</span>
+<span class="text-[10px] bg-surface-bright text-on-surface-variant px-2 py-0.5 rounded">API-Linked</span>
+</div>
+<button class="w-full py-3 bg-surface-container-highest group-hover:bg-primary-container text-on-surface group-hover:text-on-primary-container font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                                Deploy Template
+                            </button>
+</div>
+</div>
+<!-- Template Card 4 -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all duration-300">
+<div class="aspect-[16/10] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="macro view of organic glowing fiber optic strands weaving together in a dark void with soft magenta and violet light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuLoChvCWAZy6PTL35I-IJLWGqESG0xbZkDC23dvXxarw36SsBYAy8mEGPv0k6LQ3Xyp6u4a5rVUefgp6Bh5MzhWwUrHklU3298oHNSqVzRl1Bag0R74Ocd7p6vdQ0n_i1wZPCGwHElznFUj8ssBbwB-SNxlXOkyZN-Y_SdvYRkccpi887p3O1CPEtLypXkqjBl1rckE7KlXVzgH54yUKjowbWHmNQCUHUcbJ9JSYBRKMmYJPJA8VkL8wIyQ9jeriMGFdY3PZksw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-60"></div>
+<div class="absolute top-4 left-4 bg-primary/20 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-primary uppercase tracking-widest border border-primary/30">Statistical</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-xl font-bold text-on-surface">Biological Flow Path</h3>
+<span class="material-symbols-outlined text-on-surface-variant/40 hover:text-secondary cursor-pointer transition-colors">bookmark</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6 flex-1">
+                                Simulates cellular interaction and biochemical signaling pathways with volumetric rendering and interactive flow vectors.
+                            </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="text-[10px] bg-secondary-container/20 text-secondary-container px-2 py-0.5 rounded border border-secondary-container/30">Volumetric</span>
+<span class="text-[10px] bg-surface-bright text-on-surface-variant px-2 py-0.5 rounded">Bio-Model</span>
+</div>
+<button class="w-full py-3 bg-surface-container-highest group-hover:bg-primary-container text-on-surface group-hover:text-on-primary-container font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                                Deploy Template
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Nav Anchor -->
+<div class="md:hidden fixed bottom-0 w-full glass-panel h-16 flex justify-around items-center px-4 z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Dash</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-medium">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium">Data</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</body></html>

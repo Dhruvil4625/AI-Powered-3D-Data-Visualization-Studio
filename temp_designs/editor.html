@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Observatory | 3D Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#2d3137",
+              "on-surface": "#dfe2eb",
+              "secondary-container": "#7000ff",
+              "surface-bright": "#353940",
+              "on-secondary-fixed": "#23005b",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#5700c9",
+              "surface-tint": "#00daf3",
+              "tertiary-fixed-dim": "#ffade1",
+              "error": "#ffb4ab",
+              "surface-container-high": "#262a31",
+              "on-tertiary": "#5f004e",
+              "on-primary-fixed": "#001f24",
+              "on-primary-container": "#00626e",
+              "on-tertiary-container": "#a60089",
+              "surface-container-lowest": "#0a0e14",
+              "surface-variant": "#31353c",
+              "tertiary-fixed": "#ffd8ed",
+              "secondary-fixed": "#e9ddff",
+              "on-surface-variant": "#bac9cc",
+              "primary-container": "#00e5ff",
+              "on-secondary-container": "#ddcdff",
+              "on-error": "#690005",
+              "tertiary-container": "#ffbde5",
+              "secondary": "#d1bcff",
+              "on-primary": "#00363d",
+              "on-tertiary-fixed": "#3b002f",
+              "on-secondary": "#3c0090",
+              "secondary-fixed-dim": "#d1bcff",
+              "surface-dim": "#10141a",
+              "background": "#10141a",
+              "surface": "#10141a",
+              "inverse-surface": "#dfe2eb",
+              "tertiary": "#ffe6f2",
+              "on-background": "#dfe2eb",
+              "primary-fixed": "#9cf0ff",
+              "primary-fixed-dim": "#00daf3",
+              "on-tertiary-fixed-variant": "#86006f",
+              "inverse-primary": "#006875",
+              "on-primary-fixed-variant": "#004f58",
+              "outline-variant": "#3b494c",
+              "surface-container-highest": "#31353c",
+              "error-container": "#93000a",
+              "surface-container-low": "#181c22",
+              "primary": "#c3f5ff",
+              "surface-container": "#1c2026",
+              "outline": "#849396"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(53, 57, 64, 0.1);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(195, 245, 255, 0.1);
+            border-left: 1px solid rgba(195, 245, 255, 0.1);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden h-screen w-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center w-full px-6 h-16 bg-[#10141a]/80 backdrop-blur-xl bg-gradient-to-b from-[#353940]/10 to-transparent shadow-[0_0_20px_rgba(0,229,255,0.05)]">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#c3f5ff] font-headline">Kinetic Observatory</span>
+<nav class="hidden md:flex items-center gap-6 font-['Space_Grotesk'] tracking-tight text-sm">
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all duration-300" href="#">Projects</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all duration-300" href="#">Templates</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all duration-300" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#c3f5ff] hover:bg-[#353940]/30 transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-[#c3f5ff] hover:bg-[#353940]/30 transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#c3f5ff]/20">
+<img alt="User profile avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdHM_xCUJ1iOEFH57GzoTKd2-AsjmdNMlcgnUunH1cVEngbQCxvSBh7YQM_NBJqCRBgGl6EWcZo36QhwwfthONzXxCHS1t_BubabyCMI2XUbgiqP014qZMDNXcmOEQqGgwCsiR24IMJzfn-5gChhT16iWLpL8i274XvgnHwpdaxuiB6FbEfgicgduJVOmQV2-dQ9iKea8NLvpztj60WOm4ZTAfj6WIbnAMvAmhnz0IkbYYSFqNdFcDsFp_E1k_iZqwcokA3n5poA"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16 h-full overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen flex flex-col py-8 bg-[#0a0e14] border-r border-[#353940]/20 w-64 z-40">
+<div class="px-6 mb-10 pt-12">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-sm" data-icon="hub">hub</span>
+</div>
+<div>
+<h3 class="font-headline text-sm font-bold text-primary leading-tight">Project Alpha</h3>
+<p class="text-[10px] text-on-surface/40 uppercase tracking-widest">V3.2 Active</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 text-xs uppercase tracking-widest text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-xs uppercase tracking-widest text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span>Data Studio</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 bg-[#c3f5ff]/10 text-[#c3f5ff] border-r-4 border-[#c3f5ff] font-bold text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="3d_rotation">3d_rotation</span>
+<span>3D Editor</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-xs uppercase tracking-widest text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Collaborate</span>
+</a>
+</nav>
+<div class="px-4 mb-4">
+<button class="w-full py-3 bg-secondary-container text-on-secondary-container rounded font-headline text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all">
+                    New Visualization
+                </button>
+</div>
+<footer class="px-4 pt-4 border-t border-[#353940]/20 space-y-1">
+<a class="flex items-center gap-4 px-4 py-2 text-[10px] uppercase tracking-widest text-[#dfe2eb]/40 hover:text-[#dfe2eb]" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-2 text-[10px] uppercase tracking-widest text-[#dfe2eb]/40 hover:text-[#dfe2eb]" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+</footer>
+</aside>
+<!-- Main Content Area: The Viewport -->
+<main class="ml-64 flex-1 relative bg-surface-container-lowest overflow-hidden">
+<!-- 3D Viewport Simulation -->
+<div class="absolute inset-0 z-0">
+<img alt="Complex 3D network graph" class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="Intricate 3D network graph with glowing neon cyan nodes and thin purple connecting lines in a dark void with subtle volumetric fog" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC954SuH9rjjLpCTFtgmbc2tUlcj3APRfyvvROKfCtVWIn0_Zgd_Aadt98Ffebqdsa5m4Z-UYo1WLewCGxt-gYPS731ueJHC8WeFEzxX09tzhj5A59yWyqtHAvRqJmaooxpZWJTRFeRPVc6ahVMGKY--b1RIOR8a1KtLAsDLRB-39pc7OSWo2BB-WLYgARN_B1ZJnBCQx7UDMupRwy6rq3QrUkIOaUpU8ztXiVNKFsNYF4QHCfV3Zu_9E8t4SKKh0Rw71ssFTzNzA"/>
+<!-- Overlay Gradient for Depth -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#10141a_100%)] opacity-40"></div>
+</div>
+<!-- HUD Elements -->
+<div class="absolute top-6 left-6 z-10 flex flex-col gap-2">
+<div class="glass-panel px-4 py-2 rounded-lg border border-primary/10">
+<span class="text-[10px] uppercase tracking-widest text-primary/60 block mb-1">Active View</span>
+<h2 class="font-headline text-lg font-bold text-on-surface">Neural Topology Cluster B-4</h2>
+</div>
+<div class="flex gap-2">
+<div class="glass-panel px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#00e5ff]"></span>
+<span class="text-[10px] font-bold tracking-widest uppercase">Live Stream</span>
+</div>
+<div class="glass-panel px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="text-[10px] text-on-surface/60 font-medium">Nodes: 142,059</span>
+</div>
+</div>
+</div>
+<!-- Viewport Controls (Bottom Left) -->
+<div class="absolute bottom-32 left-6 z-10 flex gap-1">
+<button class="w-10 h-10 glass-panel rounded flex items-center justify-center hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="videocam">videocam</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded flex items-center justify-center hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="grid_on">grid_on</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded flex items-center justify-center hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="layers">layers</span>
+</button>
+</div>
+<!-- Bottom Timeline -->
+<section class="absolute bottom-0 left-0 right-0 h-24 glass-panel border-t border-[#353940]/40 px-8 py-4 z-20">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-4">
+<button class="text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="skip_previous">skip_previous</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+<span class="material-symbols-outlined text-xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="skip_next">skip_next</span>
+</button>
+<span class="font-mono text-xs text-primary/60 ml-4">00:42:15 / 03:00:00</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-[10px] uppercase tracking-widest text-on-surface/40">Loop: Enabled</span>
+<span class="text-[10px] uppercase tracking-widest text-on-surface/40">Speed: 1.0x</span>
+</div>
+</div>
+<div class="relative w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-[42%] bg-gradient-to-r from-primary to-secondary-container"></div>
+<div class="absolute left-[42%] top-1/2 -translate-y-1/2 w-3 h-3 bg-on-surface rounded-full shadow-[0_0_10px_white]"></div>
+<!-- Markers -->
+<div class="absolute left-[20%] top-0 h-full w-px bg-white/20"></div>
+<div class="absolute left-[60%] top-0 h-full w-px bg-white/20"></div>
+<div class="absolute left-[85%] top-0 h-full w-px bg-white/20"></div>
+</div>
+</section>
+</main>
+<!-- Right Sidebar: Editor Controls -->
+<aside class="w-80 h-full bg-surface-container-low border-l border-[#353940]/20 flex flex-col z-30 overflow-y-auto no-scrollbar">
+<!-- AI Suggestions Section -->
+<div class="p-6 border-b border-[#353940]/20">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<h4 class="text-xs font-bold uppercase tracking-widest text-secondary">AI Suggestions</h4>
+</div>
+<div class="space-y-3">
+<button class="w-full p-4 rounded-lg bg-secondary-container/10 border border-secondary/20 hover:bg-secondary-container/20 transition-all text-left group">
+<p class="text-[11px] text-secondary font-bold mb-1">Switch to 3D Heatmap</p>
+<p class="text-[10px] text-on-surface/60 leading-relaxed">Detecting dense node clusters. A heatmap may reveal hidden architectural patterns.</p>
+<div class="flex justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-[10px] font-bold text-secondary">Apply Suggestion →</span>
+</div>
+</button>
+<button class="w-full p-4 rounded-lg glass-panel border border-primary/10 hover:border-primary/30 transition-all text-left group">
+<p class="text-[11px] text-primary font-bold mb-1">Animate Flow Density</p>
+<p class="text-[10px] text-on-surface/60 leading-relaxed">Visualizing the pathing between nodes using kinetic light trails.</p>
+</button>
+</div>
+</div>
+<!-- Style Controls Section -->
+<div class="p-6 flex-1 space-y-8">
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-on-surface/40 mb-6">Visual Style</h4>
+<!-- Color Control -->
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-center">
+<label class="text-[11px] text-on-surface/80">Primary Node Color</label>
+<div class="w-12 h-5 rounded border border-outline-variant bg-primary-container"></div>
+</div>
+<div class="flex justify-between items-center">
+<label class="text-[11px] text-on-surface/80">Secondary Accent</label>
+<div class="w-12 h-5 rounded border border-outline-variant bg-secondary-container"></div>
+</div>
+</div>
+<!-- Sliders -->
+<div class="space-y-6">
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-on-surface/60 uppercase">Node Opacity</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-primary"></div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-on-surface/60 uppercase">Point Scale</span>
+<span class="text-primary">1.2x</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-[40%] bg-primary"></div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-on-surface/60 uppercase">Edge Thickness</span>
+<span class="text-primary">0.05px</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-[15%] bg-primary"></div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-on-surface/40 mb-6">Camera Settings</h4>
+<div class="grid grid-cols-2 gap-2">
+<button class="px-3 py-2 text-[10px] font-bold uppercase bg-surface-container-high text-on-surface/80 border border-outline-variant rounded hover:bg-surface-bright transition-all">Orbit</button>
+<button class="px-3 py-2 text-[10px] font-bold uppercase bg-primary-container text-on-primary-container border border-primary rounded hover:brightness-110 transition-all">First Person</button>
+<button class="px-3 py-2 text-[10px] font-bold uppercase bg-surface-container-high text-on-surface/80 border border-outline-variant rounded hover:bg-surface-bright transition-all">Axonometric</button>
+<button class="px-3 py-2 text-[10px] font-bold uppercase bg-surface-container-high text-on-surface/80 border border-outline-variant rounded hover:bg-surface-bright transition-all">Top Down</button>
+</div>
+</div>
+<!-- Footer CTA in sidebar -->
+<div class="pt-4">
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-primary-container text-on-primary-container rounded font-headline font-bold uppercase tracking-widest hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="export_notes">export_notes</span>
+                        Export Visualization
+                    </button>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

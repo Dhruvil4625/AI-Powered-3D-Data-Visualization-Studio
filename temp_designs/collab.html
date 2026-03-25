@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Observatory | Collaboration &amp; Export</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#2d3137",
+                        "on-surface": "#dfe2eb",
+                        "secondary-container": "#7000ff",
+                        "surface-bright": "#353940",
+                        "on-secondary-fixed": "#23005b",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#5700c9",
+                        "surface-tint": "#00daf3",
+                        "tertiary-fixed-dim": "#ffade1",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#262a31",
+                        "on-tertiary": "#5f004e",
+                        "on-primary-fixed": "#001f24",
+                        "on-primary-container": "#00626e",
+                        "on-tertiary-container": "#a60089",
+                        "surface-container-lowest": "#0a0e14",
+                        "surface-variant": "#31353c",
+                        "tertiary-fixed": "#ffd8ed",
+                        "secondary-fixed": "#e9ddff",
+                        "on-surface-variant": "#bac9cc",
+                        "primary-container": "#00e5ff",
+                        "on-secondary-container": "#ddcdff",
+                        "on-error": "#690005",
+                        "tertiary-container": "#ffbde5",
+                        "secondary": "#d1bcff",
+                        "on-primary": "#00363d",
+                        "on-tertiary-fixed": "#3b002f",
+                        "on-secondary": "#3c0090",
+                        "secondary-fixed-dim": "#d1bcff",
+                        "surface-dim": "#10141a",
+                        "background": "#10141a",
+                        "surface": "#10141a",
+                        "inverse-surface": "#dfe2eb",
+                        "tertiary": "#ffe6f2",
+                        "on-background": "#dfe2eb",
+                        "primary-fixed": "#9cf0ff",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-tertiary-fixed-variant": "#86006f",
+                        "inverse-primary": "#006875",
+                        "on-primary-fixed-variant": "#004f58",
+                        "outline-variant": "#3b494c",
+                        "surface-container-highest": "#31353c",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#181c22",
+                        "primary": "#c3f5ff",
+                        "surface-container": "#1c2026",
+                        "outline": "#849396"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(53, 57, 64, 0.1);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(195, 245, 255, 0.1);
+            border-left: 1px solid rgba(195, 245, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #353940; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden">
+<!-- Top Navigation Shell -->
+<header class="bg-[#10141a]/80 backdrop-blur-xl font-['Space_Grotesk'] tracking-tight text-sm docked full-width top-0 z-50 bg-gradient-to-b from-[#353940]/10 to-transparent shadow-[0_0_20px_rgba(0,229,255,0.05)] flex justify-between items-center w-full px-6 h-16 fixed">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#c3f5ff]">Kinetic Observatory</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all duration-300" href="#">Projects</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all duration-300" href="#">Templates</a>
+<a class="text-[#dfe2eb]/60 hover:text-[#dfe2eb] transition-all duration-300" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-[#353940]/30 transition-all duration-300 rounded-lg">
+<span class="material-symbols-outlined text-[#c3f5ff]" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#353940]/30 transition-all duration-300 rounded-lg">
+<span class="material-symbols-outlined text-[#c3f5ff]" data-icon="settings">settings</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-primary/20" data-alt="portrait of a professional creative designer with soft cinematic studio lighting and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtP7NPFg7MY7UfTImoqh99PA6BjBYdufe5kJ3IhaD033vfLRROcFkb8F8HjbpuBjKnCn2RcfMyu1tUGIewzChyB5TMXL_7IOZS_zepoO-hOhww9Dx2QAeQw3B5mPgMsrktval4UEipN4jBPqG2ajNd4RXsvnRlThzpNOyJMhDQY2oWv53A0wzpCrrf57k6a2CA4SrQ0j-GV0tt4qmTDnTxn4SxcTIspq51OIWpkzxvI5GtXNbmuia3QqUAt9YuUHk401ZXVGaSRg"/>
+</div>
+</header>
+<!-- Side Navigation Shell -->
+<aside class="bg-[#0a0e14] font-['Inter'] text-xs uppercase tracking-widest fixed left-0 top-0 h-screen w-64 flex flex-col py-8 border-r border-[#353940]/20 z-40 mt-16">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-sm" data-icon="database">database</span>
+</div>
+<div>
+<h3 class="text-on-surface font-bold tracking-normal normal-case text-sm">Project Alpha</h3>
+<p class="text-[10px] text-primary/60 tracking-widest uppercase">V3.2 Active</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span>Data Studio</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#dfe2eb]/40 hover:bg-[#353940]/10 hover:text-[#dfe2eb] transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="3d_rotation">3d_rotation</span>
+<span>3D Editor</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 bg-[#c3f5ff]/10 text-[#c3f5ff] border-r-4 border-[#c3f5ff] font-bold transition-colors ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Collaborate</span>
+</a>
+</nav>
+<div class="px-4 mt-auto mb-20">
+<button class="w-full bg-primary-container text-on-primary-container py-3 rounded font-bold text-[10px] tracking-widest flex items-center justify-center gap-2 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                NEW VISUALIZATION
+            </button>
+</div>
+<div class="px-6 space-y-4 opacity-60">
+<a class="flex items-center gap-3 text-[#dfe2eb] hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-3 text-[#dfe2eb] hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 h-[calc(100vh-4rem)] p-8 flex flex-col gap-8 overflow-y-auto custom-scrollbar">
+<!-- Header Section -->
+<header class="flex flex-col gap-2">
+<span class="text-primary font-label text-[10px] uppercase tracking-[0.3em]">Project Workspace</span>
+<div class="flex justify-between items-end">
+<h1 class="font-headline text-4xl font-bold text-on-surface tracking-tight">Collaboration &amp; Export</h1>
+<div class="flex gap-4">
+<div class="flex -space-x-3">
+<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background" data-alt="portrait of a female tech executive in soft blue lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH-lQseH8YuIC_25FOe7TrPpnnHZ4Fizu-zAj0RCBy-BViP3falBgQrd6XM1Y3XxJGXrG0yfIf8EHYxZ-7aEs42_JyzyQeyUj88nUSUOjLYC5gCn_TUXpTrU0ioqQP3LNtMkgNL7S0YKNYLJr6SdrPFqcLKro1u23w7n5E80RrE1Fod3EGtdS34uAIBZxbdVR9Xb9g0-sidksj0ad_ZpQo__gcTMsSu2egFN53zG47a2iqB-uLEMswy-exbbDhFuNnFPjruaG3Vw"/>
+<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background" data-alt="portrait of a male software architect in a dark tech studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNUNZmsd49IIQ8aIViukDn_99K7GQ0kfUEPD48Jz43CMc4ooRUdETTPEnqRV-ntRzk9nQnDlkUwFUarIP_UGbGFNin0v8ZEeZ_Lp6HJTN6UD2qcakeNxZNAHCaO0bW3VWM-5RRkAr-XCXB7O7nebiaczpQ1CWsfT1EE_BDZ-64wE0adkR688tOmKvw31B7Cp9-5EC0JaYD4arBesFhZCsdMcxPfXGdbl6n5U0v_KPnbuQDH5Cn9rklGn7Fn1Nvrz0Q7mQ09NbMZA"/>
+<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background" data-alt="portrait of a female data scientist with minimal laboratory aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIwUt1kw5qbf0ZoqmXZC8WvGC9cg6GJt7VDQ-iO-lEI27S_PRDy9hYzDcsfe3Gt5W8ibVkl0xA_pWnQtArCluYqCVperQ9Qhr2Tkg78I-jffrHp3hxJ5RggXpeQZVlJ3DSLEtB2zZw_rS-IrL9zSgLJPnebOEU8chKlRtud-iy6bKT_SmOb45QwxrIwkdT9x3WJbrfJ6LLpfuRFXDqLa3H_Ud6S3FgAGBLOMmCg4wRA1aURAIDQHfajsjZR-NvQiC33p8eNFcLDA"/>
+<div class="w-10 h-10 rounded-full border-2 border-background bg-surface-container-high flex items-center justify-center text-xs font-bold text-primary">+2</div>
+</div>
+<button class="bg-surface-container-highest border border-outline-variant/30 px-6 py-2 flex items-center gap-2 hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+<span class="font-label text-xs uppercase tracking-widest">Share Project</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Bento Layout Grid -->
+<div class="grid grid-cols-12 gap-6 flex-1 min-h-0">
+<!-- Team & Access Management (Left Column) -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl border border-outline-variant/10 flex-1">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline text-lg font-medium text-on-surface tracking-tight">Team Members</h2>
+<span class="text-[10px] font-label text-secondary bg-secondary/10 px-2 py-1 rounded">5 ACTIVE</span>
+</div>
+<div class="space-y-4">
+<!-- Member Row -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low/40 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img alt="Sarah Chen" class="w-10 h-10 rounded-full grayscale group-hover:grayscale-0 transition-all" data-alt="female professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS2ABiPpfeJwP2vHNnu-QX9Ee9dKmw7e0-zmsYxw2aO1siq2Im3GrRQgMbVgSkf1RWHm1MBTsINipLUvZkoWqQb3R_XIkODId4ZN5npNAhKH9d84BU71zzKYdehXcLWFPOM26nZJM0UwaZe-ITUAkl0KZIBOZq02cJfRkHAFtHxYTP3Na6QLuS_7e2P-gxjodAEUHjD5vSSHpxE4pQsgAzBn2RfHKS25GoM1dsIOpylzQ7xAYIAqEMEsxrgikqOA7Mhgv-W_DNiQ"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-primary border-2 border-background rounded-full"></div>
+</div>
+<div>
+<p class="text-sm font-medium text-on-surface">Sarah Chen</p>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">Lead Architect</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label text-primary/80 uppercase tracking-tighter">Owner</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low/40 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-3">
+<img alt="Marcus Voe" class="w-10 h-10 rounded-full grayscale group-hover:grayscale-0 transition-all" data-alt="male professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKDsd5bx5QYfXs0ItHl5ctCF7ga7QOEza50FuI8k0R6RMMsC3SRRpMrzYUtKN9vJnUNQRUrbP1SkSUYvucgR6vpCGcgIYF_csvGnqZrdEnhg0JnNxgABLU-jdODnXOr76D8beEa5ij78olvtPruOc_kq4d1B4bOthR05wkTZfVKlnxkH_f7bEm-5R3tdkFwZQAF4mD6oHX42hwO0O6BLcu8jhvVPnY82uGPgljQM0qa_tbfoxECEMqqLIVnuqCinw0NzOTxXzmxA"/>
+<div>
+<p class="text-sm font-medium text-on-surface">Marcus Voe</p>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">3D Specialist</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<select class="bg-transparent border-none text-[10px] font-label text-on-surface-variant uppercase tracking-tighter focus:ring-0 cursor-pointer">
+<option>Editor</option>
+<option>Viewer</option>
+</select>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low/40 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-3">
+<img alt="Elena Rodriguez" class="w-10 h-10 rounded-full grayscale group-hover:grayscale-0 transition-all" data-alt="female professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9dtX0En7m3T8fDRVLg6Swas1U-yo2-tOEeIVpLpxPOSxq1lJMch1wuRzhvSFWg-8JA_DD0O5O831SnETbqWwQ_ArWxCc64tWk7dAYSF27G-mM12imox0rPwPqzPfA6aLU1zSJCI-sAE2BSZDW0GudAEtWfiQsxuqjxqnjIkcJ0ExLOkQ1aaIznw4CarH1IcMdMnyRxGB05VsJkVqPjVabGEqRNvVBc0HluAIS7daWXKSTEI2fhLCwX57Ddcir_aY8O1B67oipvQ"/>
+<div>
+<p class="text-sm font-medium text-on-surface">Elena Rodriguez</p>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">Data Analyst</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<select class="bg-transparent border-none text-[10px] font-label text-on-surface-variant uppercase tracking-tighter focus:ring-0 cursor-pointer">
+<option>Viewer</option>
+<option>Editor</option>
+</select>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10">
+<h3 class="font-headline text-xs font-bold text-on-surface uppercase tracking-widest mb-4">Quick Invites</h3>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-lowest border border-outline-variant/20 rounded px-4 py-2 text-xs focus:border-primary/50 outline-none transition-all" placeholder="email@agency.com" type="email"/>
+<button class="bg-primary-container text-on-primary-container p-2 rounded hover:brightness-110">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Comments & Annotations (Middle Column) -->
+<section class="col-span-12 lg:col-span-5 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl border border-outline-variant/10 flex-1 flex flex-col overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline text-lg font-medium text-on-surface tracking-tight">Node Discussions</h2>
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+<span class="font-label uppercase tracking-tighter">Newest First</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar space-y-6 pr-2">
+<!-- Comment Thread 1 -->
+<div class="space-y-3">
+<div class="flex items-start gap-3">
+<img alt="Alex" class="w-8 h-8 rounded-full" data-alt="user portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ6hpjrwH7I7l5Dd_wpr863h37z6kYpaEobol94s5yDNj5HIqKwPC5ZKIFb4ROo7Uc9HIjTpvd8TzvkoFKRE1LO1pwhJnHc2F1mecnS7_bKG5HfplpPoU6Q3DUtlYkH_9UnFeV9PNZnkEnPzscLoFsDGY3KRBC4LaNhD0C1nwU58xPec4sjnzKGXrFO8tPIimRfH8GIAaE5JhHuyipDZRRO3qFsVpmfO4YLkD0DieplpJwVViMtrGZUx7GzKErdoJQDhQ8sPzteg"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-bold text-primary">Alex Hunt</span>
+<span class="text-[10px] text-on-surface-variant font-label">14:02 PM</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3 text-sm text-on-surface border-l-2 border-primary/30">
+<div class="flex items-center gap-2 mb-2 text-[10px] font-label text-secondary-fixed-dim bg-secondary-container/20 w-fit px-2 rounded">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_on">location_on</span>
+                                            GEOMETRY_NODE_04
+                                        </div>
+                                        The vertex displacement on this node seems too aggressive for the dataset. Can we scale back the noise frequency?
+                                    </div>
+</div>
+</div>
+<!-- Reply -->
+<div class="ml-11 flex items-start gap-3 border-l border-outline-variant/30 pl-4">
+<img alt="Marcus" class="w-6 h-6 rounded-full" data-alt="user portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHoc7T3VoFcm_lAKECSzmiKeUm5Tim4vCsXf_QGdXyIM45QEAQxEA7n-K6dr4GCFKBNRNGS6O5P2LEU-lY2Y4rCiioOurAIiUdxc6tipuf5icGr6KeFbYJ40pX0PyrKQh8bcC02SCOAERcliHGTKps4sZzPw89fGU4iRB6_KX-z6hIo0asv6MVAfSzdcVKu7YSxB6GsOeEwk9S9W6paN_WiAz5MiMzxZSacsnQWdsZmmu3VBPy-kuFtXttS3-Cogchd_OHIe1UQg"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[11px] font-bold text-on-surface">Marcus Voe</span>
+<span class="text-[10px] text-on-surface-variant font-label">14:15 PM</span>
+</div>
+<div class="text-xs text-on-surface-variant italic">
+                                        Adjusted noise multiplier to 0.45. Let me know if that works for the visualization density.
+                                    </div>
+</div>
+</div>
+</div>
+<!-- Comment Thread 2 -->
+<div class="flex items-start gap-3 opacity-80">
+<img alt="Sarah" class="w-8 h-8 rounded-full" data-alt="user portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb_lEc0M9zg2n53IDt6Ql-PHb-BUSibP-MnlIpQq251i_E6MDxBwmoI5wqh6EPXyuT4aFceQt6GmU4G9DvwPz9xyfkP749FcH9eSJyccRzN1s5JiFeYaZgZdexj4z29aJYfTlEHivgBMRrBdgK8_FmPXhah_UYjiPi3zHBnu4YY5RCFEB2ePv3bx_K2GBY_BiLEw1HKWsGSKSQGOXuxEAAPlzCEzdxVqwrI8iED9L7yjZPFNvR93EDwwyy34gYmZyqCzXQnOWYiQ"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-bold text-primary">Sarah Chen</span>
+<span class="text-[10px] text-on-surface-variant font-label">Yesterday</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3 text-sm text-on-surface">
+<div class="flex items-center gap-2 mb-2 text-[10px] font-label text-tertiary-fixed-dim bg-tertiary-container/10 w-fit px-2 rounded">
+<span class="material-symbols-outlined text-[12px]" data-icon="palette">palette</span>
+                                        GLOBAL_ENVIRONMENT
+                                    </div>
+                                    Love the bloom effect here, but check the contrast ratio for the secondary labels in dark environments.
+                                </div>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-lg px-4 py-3 text-sm focus:border-primary/50 outline-none transition-all resize-none h-20 pr-12 custom-scrollbar" placeholder="Write a comment..."></textarea>
+<div class="absolute right-3 bottom-3 flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="attach_file">attach_file</span>
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="send">send</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Export Options (Right Column) -->
+<section class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl border border-outline-variant/10 h-full flex flex-col">
+<h2 class="font-headline text-lg font-medium text-on-surface tracking-tight mb-6">Export Options</h2>
+<div class="flex-1 space-y-3">
+<!-- Export Type: PNG -->
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/10 hover:border-primary/40 transition-all group cursor-pointer">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface uppercase tracking-widest">High-Res Render</span>
+<span class="text-[10px] font-label text-primary-container bg-primary-container/10 px-2 rounded">PNG / JPG</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mb-4">4K resolution with alpha transparency support.</p>
+<button class="w-full py-2 bg-surface-bright rounded text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">Generate Image</button>
+</div>
+<!-- Export Type: Vector -->
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/10 hover:border-secondary/40 transition-all group cursor-pointer">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface uppercase tracking-widest">Vector Paths</span>
+<span class="text-[10px] font-label text-secondary-fixed-dim bg-secondary-container/20 px-2 rounded">SVG / PDF</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mb-4">Infinite scalability for print and presentation.</p>
+<button class="w-full py-2 bg-surface-bright rounded text-[10px] font-bold uppercase tracking-widest hover:bg-secondary hover:text-on-secondary transition-all">Export Vector</button>
+</div>
+<!-- Export Type: 3D Model -->
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/10 hover:border-tertiary/40 transition-all group cursor-pointer">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface uppercase tracking-widest">3D Asset</span>
+<span class="text-[10px] font-label text-tertiary-fixed-dim bg-tertiary-container/10 px-2 rounded">GLTF / OBJ</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mb-4">Compressed binary format for web engines.</p>
+<button class="w-full py-2 bg-surface-bright rounded text-[10px] font-bold uppercase tracking-widest hover:bg-tertiary hover:text-on-tertiary transition-all">Package 3D</button>
+</div>
+<!-- Export Type: Embed -->
+<div class="p-4 rounded-lg bg-primary-container/10 border border-primary-container/30 hover:bg-primary-container/20 transition-all group cursor-pointer">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-primary-container uppercase tracking-widest">Web Embed</span>
+<span class="text-[10px] font-label text-primary bg-primary/20 px-2 rounded">iFrame</span>
+</div>
+<p class="text-[10px] text-primary/60 mb-4">Interactive viewer for browsers and apps.</p>
+<button class="w-full py-2 bg-primary-container text-on-primary-container rounded text-[10px] font-bold uppercase tracking-widest hover:brightness-110 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="code">code</span>
+                                Copy Embed Script
+                            </button>
+</div>
+</div>
+<div class="mt-8">
+<div class="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="cloud_done">cloud_done</span>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-tighter">Auto-Sync Enabled</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-[85%] h-full bg-primary shadow-[0_0_8px_#c3f5ff]"></div>
+</div>
+<p class="text-[9px] text-on-surface-variant mt-2 text-right">8.2 GB of 10 GB Used</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Asymmetric Bottom Detail Section -->
+<section class="grid grid-cols-12 gap-6 pb-8">
+<div class="col-span-12 lg:col-span-8 glass-panel p-6 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full group-hover:bg-primary/10 transition-all"></div>
+<div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+<div class="w-32 h-32 flex-shrink-0 bg-surface-container-high rounded border border-outline-variant/20 flex items-center justify-center relative overflow-hidden">
+<img alt="Preview" class="absolute inset-0 w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-700" data-alt="abstract 3D data visualization rendered in neon cyan and purple tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZThHSBt2ibBIAE-dI-be1deOSwMfWPtYRK2nxkhMfD6IxlN1hnQYJwPbnaX-8VQDFch7Hu125qbdvkVCPcapbVy4kOgjGFfsn8wvvcsk8foqlN1fUHu8kdBpZNV2h8KVT_qA0h_OX5o4DLbFnKofGM7joA1cnruriA7P9Rx8pmVyeRO3PedkoMdhWGLqmry_qrgRFsKuXLk6mKobDoU_2q0TXcuk1QwRhXHA7QVyP35JuL3zYyl0WiMMCRa82d0UuyZfajcjT9w"/>
+<span class="material-symbols-outlined text-primary text-3xl opacity-50" data-icon="visibility">visibility</span>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h4 class="font-headline text-lg font-medium text-on-surface mb-2">Live Node Performance</h4>
+<p class="text-sm text-on-surface-variant max-w-xl mb-4">Node 'GEOMETRY_DISPLACER' is currently under heavy load. Collaboration may experience slight latency in viewport updates. Optimization recommended before final export.</p>
+<div class="flex flex-wrap justify-center md:justify-start gap-4">
+<div class="flex flex-col">
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">FPS</span>
+<span class="font-headline text-xl text-primary font-bold">58.2</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/30 pl-4">
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">VRAM</span>
+<span class="font-headline text-xl text-secondary font-bold">4.2 GB</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/30 pl-4">
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Active Nodes</span>
+<span class="font-headline text-xl text-tertiary font-bold">1,248</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4 glass-panel p-6 rounded-xl border border-outline-variant/10 flex flex-col justify-center items-center text-center">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h4 class="font-headline text-md font-medium text-on-surface mb-2">Generate AI Summaries</h4>
+<p class="text-xs text-on-surface-variant mb-4">Use KinOS Intelligence to summarize all recent team discussions into a project status report.</p>
+<button class="px-6 py-2 border border-secondary/30 text-secondary text-[10px] font-bold uppercase tracking-widest hover:bg-secondary/10 transition-all rounded">Initialize AI</button>
+</div>
+</section>
+</main>
+<!-- Floating Action Button for Collaboration Tools (HUD Style) -->
+<div class="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3">
+<div class="group relative flex items-center">
+<span class="mr-4 px-3 py-1 bg-surface-bright text-[10px] font-label text-on-surface rounded opacity-0 group-hover:opacity-100 transition-opacity border border-outline-variant/20">NEW COMMENT</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface hover:border-primary transition-all shadow-xl">
+<span class="material-symbols-outlined" data-icon="add_comment">add_comment</span>
+</button>
+</div>
+<button class="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_20px_rgba(0,229,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl font-bold" data-icon="ios_share">ios_share</span>
+</button>
+</div>
+</body></html>
