@@ -1,6 +1,6 @@
 # AI-Powered 3D Data Visualization Studio
 
-![Home Page](screen.png)
+![Home Page](./src/assets/screen.png)
 
 ## Overview
 The **AI-Powered 3D Data Visualization Studio** is a cutting-edge platform designed to transform complex, multi-dimensional datasets into immersive, interactive 3D landscapes. By harnessing the power of Artificial Intelligence and advanced rendering technologies, this system allows users to _"Visualize the Invisible"_�revealing hidden patterns, anomalies, and correlations in data that traditional 2D graphs cannot capture.
