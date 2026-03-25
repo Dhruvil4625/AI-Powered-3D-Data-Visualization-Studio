@@ -1,5 +1,7 @@
 # AI-Powered 3D Data Visualization Studio
 
+![Home Page](./src/assets/hero.png)
+
 ## Overview
 The **AI-Powered 3D Data Visualization Studio** is a cutting-edge platform designed to transform complex, multi-dimensional datasets into immersive, interactive 3D landscapes. By harnessing the power of Artificial Intelligence and advanced rendering technologies, this system allows users to _"Visualize the Invisible"_—revealing hidden patterns, anomalies, and correlations in data that traditional 2D graphs cannot capture.
 
@@ -34,6 +36,11 @@ A unified interface to monitor active data pipelines, review computational healt
 - **Statistical (Scatter Plots)**: High-density 3D cluster mapping for multivariate datasets and outlier detection.
 - **Relational (Network Graphs)**: Visualize complex interdependencies and neural node architectures in physical space.
 - **Geospatial (Geographic Maps)**: Project global data layers onto interactive 3D globes with terrain extrusion.
+
+### 4. Collaboration & Asset Management
+- **Project Workspaces & Collaborate**: Seamless real-time collaboration with role-based access control (Owner, Editor, Viewer), threaded node discussions, and live performance monitoring.
+- **Templates & Library Browser**: Access, save, and reuse 3D visualization architectures and shared material assets within the UI.
+- **Project Settings & Messaging**: Manage system-wide preferences, API connections, and sync internal team communications on data pipeline status.
 
 ## How It Works (Technical Architecture)
 1. **Frontend UI**: Built on React, TypeScript, and Vite. Utilizes TailwindCSS and Glassmorphism for a futuristic, immersive user interface. 
