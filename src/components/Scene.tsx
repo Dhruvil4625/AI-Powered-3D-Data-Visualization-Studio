@@ -4,8 +4,11 @@ import { OrbitControls, Stars } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { useAppStore } from '../store/useAppStore';
 import { ScatterChart } from './charts/ScatterChart';
+import { BarChart3D } from './charts/BarChart3D';
+import { LineGraph3D } from './charts/LineGraph3D';
+import { SurfacePlot } from './charts/SurfacePlot';
 
-export const Scene: React.FC<{ showGrid: boolean; showAxes: boolean; autoRotate: boolean }> = ({ showGrid, showAxes, autoRotate }) => {
+export const Scene: React.FC<{ showGrid: boolean; showAxes: boolean; autoRotate: boolean }> = ({ showGrid, showAxes }) => {
   const { chartConfig, visualConfig } = useAppStore();
 
   const getCameraSettings = () => {
@@ -33,13 +36,11 @@ export const Scene: React.FC<{ showGrid: boolean; showAxes: boolean; autoRotate:
       
       <Suspense fallback={null}>
         {chartConfig.type === 'scatter' && <ScatterChart />}
+        {chartConfig.type === 'bar' && <BarChart3D />}
+        {chartConfig.type === 'line' && <LineGraph3D />}
+        {chartConfig.type === 'surface' && <SurfacePlot />}
       </Suspense>
-
-      <OrbitControls 
-        makeDefault 
-        enableDamping 
-        dampingFactor={0.05} 
-        autoRotate={autoRotate} 
+      <OrbitControls
         autoRotateSpeed={0.5}
         maxPolarAngle={controls.maxPolarAngle}
         minPolarAngle={controls.minPolarAngle}
