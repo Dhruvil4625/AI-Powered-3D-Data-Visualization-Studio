@@ -3,7 +3,7 @@ import { Scene } from '../Scene';
 import { useAppStore } from '../../store/useAppStore';
 
 export const Editor3DView: React.FC = () => {
-  const { chatHistory, addChatMessage, isAiThinking, setIsAiThinking, setChartConfig, visualConfig, setVisualConfig, data, setToastMessage } = useAppStore();
+  const { chatHistory, addChatMessage, isAiThinking, setIsAiThinking, setChartConfig, visualConfig, setVisualConfig, data, cleaningStats, setToastMessage } = useAppStore();
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showGrid, setShowGrid] = useState(true);
@@ -45,7 +45,7 @@ export const Editor3DView: React.FC = () => {
     scrollToBottom();
   }, [chatHistory, isAiThinking]);
 
-  const handleSendMessage = (e?: React.FormEvent, overrideMsg?: string) => {
+  const handleSendMessage = async (e?: React.FormEvent, overrideMsg?: string) => {
     e?.preventDefault();
     const msg = overrideMsg || inputMessage;
     if (!msg.trim() || isAiThinking) return;
@@ -54,36 +54,48 @@ export const Editor3DView: React.FC = () => {
     if (!overrideMsg) setInputMessage('');
     setIsAiThinking(true);
 
-    // Mock AI Response Loop
-    setTimeout(() => {
-      const lowerInput = msg.toLowerCase();
-      let responseContent = "I've updated the visualization based on your request. Let me know if you need to adjust anything else.";
+    try {
+      const response = await fetch('http://localhost:8000/api/chat/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: msg, context: { cleaning_stats: cleaningStats } })
+      });
       
-      if (lowerInput.includes('bar')) {
-        setChartConfig({ type: 'bar' });
-        responseContent = "I've switched the visualization to a 3D bar chart layout.";
-      } else if (lowerInput.includes('scatter')) {
-        setChartConfig({ type: 'scatter' });
-        responseContent = "I've reverted to the volumetric scatter plot.";
-      } else if (lowerInput.includes('heatmap')) {
-        setChartConfig({ type: 'scatter' });
-        setVisualConfig({ primaryColor: '#ff3300', secondaryColor: '#ffaa00', nodeOpacity: 0.9 });
-        responseContent = "I've applied a heatmap gradient to the projection nodes. Dense clusters are now highly visible.";
-      } else if (lowerInput.includes('density') || lowerInput.includes('animate')) {
-        setChartConfig({ type: 'scatter' });
-        setVisualConfig({ cameraMode: 'topDown', pointScale: 1.5 });
-        responseContent = "Animating flow density from a top-down perspective to reveal topological pathing.";
-      } else if (lowerInput.includes('outlier')) {
-        setChartConfig({ type: 'scatter' });
-        responseContent = "Topology scanned. The nodes glowing red indicate statistical outliers isolated by the Django Python engine.";
-      } else if (lowerInput.includes('clear') || lowerInput.includes('none')) {
-        setChartConfig({ type: 'none' });
-        responseContent = "I've cleared the complex charts from the scene. Only the base environment remains.";
-      }
+      const result = await response.json();
+      
+      if (response.ok) {
+        let aiReply = result.reply;
+        try {
+          const parsed = JSON.parse(aiReply);
+          if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].type === 'suggestion') {
+             aiReply = "I have some suggestions based on the analysis:\n\n" + parsed.map((s: any) => `- **${s.title}**: ${s.description} (Action: ${s.actionLabel})`).join('\n');
+          }
+        } catch (e) {
+          // Keep raw string
+        }
 
-      setIsAiThinking(false);
-      addChatMessage({ role: 'assistant', content: responseContent });
-    }, 1500);
+        // Local view overrides for demo polish
+        const lowerInput = msg.toLowerCase();
+        if (lowerInput.includes('bar')) setChartConfig({ type: 'bar' });
+        else if (lowerInput.includes('heatmap')) {
+          setChartConfig({ type: 'scatter' });
+          setVisualConfig({ primaryColor: '#ff3300', secondaryColor: '#ffaa00', nodeOpacity: 0.9 });
+        } else if (lowerInput.includes('density') || lowerInput.includes('animate')) {
+          setChartConfig({ type: 'scatter' });
+          setVisualConfig({ cameraMode: 'topDown', pointScale: 1.5 });
+        } else if (lowerInput.includes('outlier')) {
+          setChartConfig({ type: 'scatter' });
+        } else if (lowerInput.includes('clear')) setChartConfig({ type: 'none' });
+
+        addChatMessage({ role: 'assistant', content: aiReply });
+      } else {
+        addChatMessage({ role: 'assistant', content: `API Error: ${result.error}` });
+      }
+    } catch (error) {
+       addChatMessage({ role: 'assistant', content: 'Connection to API failed. Ensure Django server is running.' });
+    } finally {
+       setIsAiThinking(false);
+    }
   };
 
   return (
@@ -222,20 +234,33 @@ export const Editor3DView: React.FC = () => {
             <div className="space-y-3">
               <button 
                 className="w-full p-4 rounded-lg bg-secondary-container/10 border border-secondary/20 hover:bg-secondary-container/20 transition-all text-left group"
-                onClick={() => handleSendMessage(undefined, "Switch to 3D Heatmap")}
+                onClick={() => handleSendMessage(undefined, "Switch to 3D Bar Chart")}
               >
-                <p className="text-[11px] text-secondary font-bold mb-1">Switch to 3D Heatmap</p>
-                <p className="text-[10px] text-on-surface/60 leading-relaxed">Detecting dense node clusters. A heatmap may reveal hidden architectural patterns.</p>
+                <p className="text-[11px] text-secondary font-bold mb-1">Switch to 3D Bar Chart</p>
+                <p className="text-[10px] text-on-surface/60 leading-relaxed">Display vertical columns mapped to specific axes. Perfect for categorical variance.</p>
                 <div className="flex justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-[10px] font-bold text-secondary">Apply Suggestion →</span>
                 </div>
               </button>
               <button 
-                className="w-full p-4 rounded-lg glass-panel border border-primary/10 hover:border-primary/30 transition-all text-left group"
-                onClick={() => handleSendMessage(undefined, "Animate Flow Density")}
+                className="w-full p-4 rounded-lg bg-tertiary-container/10 border border-tertiary/20 hover:bg-tertiary-container/20 transition-all text-left group"
+                onClick={() => handleSendMessage(undefined, "Switch to 3D Line Chart")}
               >
-                <p className="text-[11px] text-primary font-bold mb-1">Animate Flow Density</p>
-                <p className="text-[10px] text-on-surface/60 leading-relaxed">Visualizing the pathing between nodes using kinetic light trails.</p>
+                <p className="text-[11px] text-tertiary font-bold mb-1">Switch to 3D Line Chart</p>
+                <p className="text-[10px] text-on-surface/60 leading-relaxed">Visualize sequential or time-based data streams with volumetric lines.</p>
+                <div className="flex justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[10px] font-bold text-tertiary">Apply Suggestion →</span>
+                </div>
+              </button>
+              <button 
+                className="w-full p-4 rounded-lg bg-primary-container/10 border border-primary/20 hover:bg-primary-container/20 transition-all text-left group"
+                onClick={() => handleSendMessage(undefined, "Switch to Surface Plot")}
+              >
+                <p className="text-[11px] text-primary font-bold mb-1">Switch to Surface Plot</p>
+                <p className="text-[10px] text-on-surface/60 leading-relaxed">Interpolate points into a continuous 3D mathematical plane.</p>
+                <div className="flex justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[10px] font-bold text-primary">Apply Suggestion →</span>
+                </div>
               </button>
             </div>
           </div>
