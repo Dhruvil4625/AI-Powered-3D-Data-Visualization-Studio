@@ -9,9 +9,26 @@ import { TemplatesBrowserView } from './components/views/TemplatesBrowserView';
 import { AssetLibraryView } from './components/views/AssetLibraryView';
 import { ProjectSettingsView } from './components/views/ProjectSettingsView';
 import { MessagingView } from './components/views/MessagingView';
+import { DataQualityReportView } from './components/views/DataQualityReportView';
+import { DataDistributionAnalysisView } from './components/views/DataDistributionAnalysisView';
+import { LoginView } from './components/views/LoginView';
 import { Toast } from './components/Toast';
+import { useAppStore } from './store/useAppStore';
 
 function App() {
+  const { token } = useAppStore();
+
+  if (!token) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginView />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
   return (
     <BrowserRouter>
       <div className="bg-background text-on-surface font-body overflow-hidden h-screen w-screen flex flex-col">
@@ -33,6 +50,9 @@ function App() {
               <Route path="/templates" element={<TemplatesBrowserView />} />
               <Route path="/library" element={<AssetLibraryView />} />
               <Route path="/settings" element={<ProjectSettingsView />} />
+              <Route path="/quality-report" element={<DataQualityReportView />} />
+              <Route path="/distribution-analysis" element={<DataDistributionAnalysisView />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </main>
         </div>
