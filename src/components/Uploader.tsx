@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react';
-import Papa from 'papaparse';
 import { UploadCloud, FileSpreadsheet, Loader2, CheckCircle2 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 export const Uploader: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { setData, isProcessingData, setIsProcessingData, data, addChatMessage, setChartConfig } = useAppStore();
+  const { setData, isProcessingData, setIsProcessingData, data, addChatMessage, setChartConfig, token } = useAppStore();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -17,41 +16,50 @@ export const Uploader: React.FC = () => {
     setIsDragging(false);
   };
 
-  const processFile = (file: File) => {
+const processFile = async (file: File) => {
     if (!file) return;
     setIsProcessingData(true);
-    
-    // For simplicity, we assume CSV for this MVP step.
-    if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
-      Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: true,
-        complete: (results) => {
-          const columns = results.meta.fields || [];
-          const rows = results.data;
-          
-          setData(rows, columns);
-          
-          // Basic auto-detect visualizer configuration
-          if (columns.length >= 3) {
-             setChartConfig({ type: 'scatter', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
-          }
-          
-          addChatMessage({
-            role: 'assistant',
-            content: `I've successfully loaded "${file.name}" with ${rows.length} rows and ${columns.length} columns. I've automatically set up a basic 3D scatter plot. How would you like to explore this further?`
-          });
-        },
-        error: (error) => {
-          console.error("Parse error:", error);
-          setIsProcessingData(false);
-        }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const res = await fetch('http://localhost:8000/api/upload/', {
+        method: 'POST',
+        headers: headers,
+        body: formData,
       });
-    } else {
-      // Basic fallback for non-csv parsing if needed
+
+      if (!res.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const result = await res.json();
+      
+      const columns = result.numeric_columns || Object.keys(result.data[0] || {});
+      const rows = result.data;
+
+      setData(rows, columns, result.dataset_id, result.cleaning_stats);
+
+      if (columns.length >= 3) {
+         setChartConfig({ type: 'scatter', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
+      }
+
+      addChatMessage({
+        role: 'assistant',
+        content: `I've successfully loaded "${file.name}" with ${rows.length} rows and ${columns.length} columns. I've automatically set up a basic 3D scatter plot. How would you like to explore this further?`
+      });
+
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert('Failed to upload file to the server.');
+    } finally {
       setIsProcessingData(false);
-      alert('Please upload a valid CSV file.');
     }
   };
 
