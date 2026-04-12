@@ -53,6 +53,38 @@ The system runs via a robust hybrid architecture:
 
 ---
 
+## Repository Structure & File Coordination
+
+To understand how the platform breathes, here is the breakdown of the exact files and how they coordinate seamlessly to ingest, process, and render data.
+
+### 1. Frontend (`/src`)
+- **`src/components/views/*`**: Contains the main dashboard screens that users interact with.
+  - `DataStudioView.tsx`: The primary ingestion point. Users drop files here.
+  - `DataDistributionAnalysisView.tsx` & `DataQualityReportView.tsx`: Provide pre-render analytical summaries based on the backend's AI output.
+  - `Editor3DView.tsx`: The wrapper for the 3D WebGL context.
+  - `AssetLibraryView.tsx` & `CollaborateView.tsx`: Manage uploaded assets and real-time team interactions.
+- **`src/components/charts/*`**: The customized 3D rendering components (`BarChart3D.tsx`, `ScatterChart.tsx`, `LineGraph3D.tsx`, `SurfacePlot.tsx`). They receive data and render it spatially.
+- **`src/store/useAppStore.ts`**: The central nervous system (using Zustand). It holds the current dataset, layout states, and coordinates updates between the UI Views and the 3D Charts.
+- **`src/components/Scene.tsx`**: The core React Three Fiber canvas where all the 3D chart components are mounted and animated.
+
+### 2. Backend API (`/backend`)
+- **`backend/core/settings.py` & `celery.py`**: Configuration for Django and the Celery worker queue.
+- **`backend/api/views.py`**: The API endpoints receiving raw datasets from the React frontend.
+- **`backend/api/models.py`**: The database schema defining how `Datasets` and analytical AI results are structured and stored.
+- **`backend/api/tasks.py`**: Background asynchronous Celery workers. When large CSVs are uploaded, this file handles the AI cleaning, topological summarization, and heavy math without locking up the server.
+
+### 3. Execution & Component Coordination Flow
+The magic happens when these files work together in sequence:
+1. **User Action**: The user drops a CSV into `DataStudioView.tsx`.
+2. **API Request**: The React application calls the Backend API.
+3. **Backend Intake**: Django's `api/views.py` receives the file. Instead of processing it instantly, it hands the workload off to `api/tasks.py`.
+4. **Asynchronous Math**: Celery (using Redis as an inter-process broker) churns through the CSV, runs AI algorithms, and saves the cleaned JSON mapping to `api/models.py`.
+5. **Frontend State Updates**: The frontend receives the cleaned dataset payload. `useAppStore.ts` consumes this new data and triggers a global re-render.
+6. **Analytical Routing**: Data populates inside `DataQualityReportView.tsx` so the user can verify data variance.
+7. **3D Rendering**: Finally, when the user opens `Editor3DView.tsx`, `Scene.tsx` mounts the scene. It reads the dataset from `useAppStore.ts` and passes it as rendering props to the customized 3D charts in `src/components/charts/`. The WebGL engine takes over, outputting the 3D visualization.
+
+---
+
 ## Installation & Deployment (Docker)
 
 The simplest way to run the entire stack (Frontend React, Backend Django, Celery Workers, and Redis) is via Docker Compose.
