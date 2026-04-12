@@ -2,15 +2,59 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../store/useAppStore';
 
+interface Comment {
+  id: number;
+  author: string;
+  time: string;
+  text: string;
+  avatar: string;
+  isReply?: boolean;
+}
+
 export const CollaborateView: React.FC = () => {
   const navigate = useNavigate();
   const [chatMessage, setChatMessage] = useState('');
   const [inviteEmail, setInviteEmail] = useState('');
   const { setToastMessage } = useAppStore();
 
+  const [comments, setComments] = useState<Comment[]>([
+    {
+      id: 1,
+      author: 'Alex Hunt',
+      time: '14:02 PM',
+      text: 'The vertex displacement on this node seems too aggressive for the dataset. Can we scale back the noise frequency?',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80',
+    },
+    {
+      id: 2,
+      author: 'Marcus Voe',
+      time: '14:15 PM',
+      text: 'Adjusted noise multiplier to 0.45. Let me know if that works for the visualization density.',
+      avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=64&h=64&q=80',
+      isReply: true,
+    },
+    {
+      id: 3,
+      author: 'Sarah Chen',
+      time: 'Yesterday',
+      text: 'Love the bloom effect here, but check the contrast ratio for the secondary labels in dark environments.',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64&q=80',
+    }
+  ]);
+
   const handleSendComment = () => {
     if (!chatMessage.trim()) return;
-    setToastMessage(`Node Annotation saved: "${chatMessage}"`);
+    
+    const newComment: Comment = {
+      id: Date.now(),
+      author: 'You (Current User)',
+      time: 'Just now',
+      text: chatMessage,
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=64&h=64&q=80',
+    };
+    
+    setComments([newComment, ...comments]);
+    setToastMessage(`Comment posted successfully.`);
     setChatMessage('');
   };
 
@@ -139,56 +183,22 @@ export const CollaborateView: React.FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto custom-scrollbar space-y-6 pr-2">
-              {/* Comment Thread 1 */}
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <img alt="Alex" className="w-8 h-8 rounded-full object-cover grayscale" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80" />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-bold text-primary">Alex Hunt</span>
-                      <span className="text-[10px] text-on-surface-variant font-label tracking-widest">14:02 PM</span>
-                    </div>
-                    <div className="bg-surface-container rounded-lg p-3 text-sm text-on-surface border-l-2 border-primary/30">
-                      <div className="flex items-center gap-2 mb-2 text-[10px] font-label text-secondary bg-secondary-container/20 w-fit px-2 py-0.5 rounded uppercase tracking-widest">
-                        <span className="material-symbols-outlined text-[12px]">location_on</span>
-                        GEOMETRY_NODE_04
+              {comments.map((comment) => (
+                <div key={comment.id} className={comment.isReply ? "ml-11 flex items-start gap-3 border-l border-outline-variant/30 pl-4" : "space-y-3"}>
+                  <div className="flex items-start gap-3 opacity-90 hover:opacity-100 transition-opacity">
+                    <img alt={comment.author} className={`rounded-full object-cover grayscale ${comment.isReply ? 'w-6 h-6' : 'w-8 h-8'}`} src={comment.avatar} />
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className={`${comment.isReply ? 'text-[11px]' : 'text-xs'} font-bold ${comment.author.includes('You') ? 'text-secondary' : 'text-primary'}`}>{comment.author}</span>
+                        <span className="text-[10px] text-on-surface-variant font-label tracking-widest">{comment.time}</span>
                       </div>
-                      The vertex displacement on this node seems too aggressive for the dataset. Can we scale back the noise frequency?
+                      <div className={`${comment.isReply ? 'text-xs text-on-surface-variant italic' : 'bg-surface-container rounded-lg p-3 text-sm text-on-surface border-l-2 border-primary/30'}`}>
+                        {comment.text}
+                      </div>
                     </div>
                   </div>
                 </div>
-                {/* Reply */}
-                <div className="ml-11 flex items-start gap-3 border-l border-outline-variant/30 pl-4">
-                  <img alt="Marcus" className="w-6 h-6 rounded-full object-cover grayscale" src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=64&h=64&q=80" />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[11px] font-bold text-on-surface">Marcus Voe</span>
-                      <span className="text-[10px] text-on-surface-variant font-label tracking-widest">14:15 PM</span>
-                    </div>
-                    <div className="text-xs text-on-surface-variant italic">
-                      Adjusted noise multiplier to 0.45. Let me know if that works for the visualization density.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comment Thread 2 */}
-              <div className="flex items-start gap-3 opacity-80 hover:opacity-100 transition-opacity">
-                <img alt="Sarah" className="w-8 h-8 rounded-full object-cover grayscale" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64&q=80" />
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs font-bold text-primary">Sarah Chen</span>
-                    <span className="text-[10px] text-on-surface-variant font-label tracking-widest">Yesterday</span>
-                  </div>
-                  <div className="bg-surface-container rounded-lg p-3 text-sm text-on-surface border-l-2 border-tertiary/30">
-                    <div className="flex items-center gap-2 mb-2 text-[10px] font-label text-tertiary bg-tertiary-container/10 w-fit px-2 py-0.5 rounded uppercase tracking-widest">
-                      <span className="material-symbols-outlined text-[12px]">palette</span>
-                      GLOBAL_ENVIRONMENT
-                    </div>
-                    Love the bloom effect here, but check the contrast ratio for the secondary labels in dark environments.
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="mt-6 shrink-0">
