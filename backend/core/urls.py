@@ -16,8 +16,33 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.http import JsonResponse
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
+def root_view(request):
+    return JsonResponse({
+        "status": "Observation Core Active",
+        "version": "1.0.0",
+        "message": "AI-Powered 3D Data Visualization Studio Backend is running."
+    })
+
+def favicon_view(request):
+    # Return empty response for favicon requests to prevent 404 logs
+    return JsonResponse({}, status=204)
 
 urlpatterns = [
+    path('', root_view, name='root'),
+    path('favicon.ico', favicon_view, name='favicon'),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
+    
+    # OpenAPI Documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
