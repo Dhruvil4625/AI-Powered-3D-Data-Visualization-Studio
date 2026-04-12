@@ -4,7 +4,7 @@ import { useAppStore } from '../store/useAppStore';
 
 export const AIChat: React.FC = () => {
   const [input, setInput] = useState('');
-  const { chatHistory, addChatMessage, isAiThinking, setIsAiThinking, setChartConfig, columns } = useAppStore();
+  const { setData, datasetId, token, chatHistory, addChatMessage, isAiThinking, setIsAiThinking, setChartConfig, columns } = useAppStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -15,31 +15,105 @@ export const AIChat: React.FC = () => {
     scrollToBottom();
   }, [chatHistory, isAiThinking]);
 
-  const handleSend = (e?: React.FormEvent) => {
+  const handleQuickAction = async (action: string) => {
+    if (!datasetId) return;
+    setIsAiThinking(true);
+    addChatMessage({ role: 'user', content: `Run Fix: ${action}` });
+    try {
+      const response = await fetch('http://localhost:8000/api/apply-fix/', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify({ dataset_id: useAppStore.getState().datasetId, action })
+      });
+      const result = await response.json();
+      if (response.ok) {
+        // Use undefined for datasetId to keep the existing one in the store
+        setData(result.data, Object.keys(result.data[0] || {}), undefined, result.cleaning_stats);
+        
+        let colorAxis = undefined;
+        if (Object.keys(result.data[0] || {}).includes('cluster')) {
+           colorAxis = 'cluster';
+        }
+        
+        if (result.numeric_columns && result.numeric_columns.length >= 3) {
+          setChartConfig({ type: 'scatter', xAxis: result.numeric_columns[0], yAxis: result.numeric_columns[1], zAxis: result.numeric_columns[2], colorAxis });
+        } else if (result.numeric_columns && result.numeric_columns.length > 0) {
+          setChartConfig({ type: 'scatter', xAxis: result.numeric_columns[0], yAxis: result.numeric_columns[0], zAxis: result.numeric_columns[0], colorAxis });
+        }
+        
+        addChatMessage({
+          role: 'assistant',
+          content: `Success! I have executed the **${action}** protocol and mapped the optimized topology.`
+        });
+      } else {
+        addChatMessage({ role: 'assistant', content: `Kinetic API Error: ${result.error}` });
+      }
+    } catch (e) {
+      addChatMessage({ role: 'assistant', content: 'Connection failed during processing.' });
+    } finally {
+      setIsAiThinking(false);
+    }
+  };
+
+  const handleSend = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!input.trim() || isAiThinking) return;
+    if (!input.trim() || isAiThinking || !datasetId) return;
 
     const userMsg = input.trim();
     setInput('');
     addChatMessage({ role: 'user', content: userMsg });
     setIsAiThinking(true);
 
-    // Simulate AI processing
-    setTimeout(() => {
-      let aiResponse = "I've updated the visualization based on your request. Let me know what you want to see next.";
+    try {
+      const response = await fetch('http://localhost:8000/api/chat-with-data/', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ dataset_id: useAppStore.getState().datasetId, prompt: userMsg })
+      });
       
-      // Extremely basic mock logic for demonstration
-      const lowerQuery = userMsg.toLowerCase();
+      const result = await response.json();
       
-      if (columns.length >= 3 && lowerQuery.includes('scatter')) {
-         setChartConfig({ type: 'scatter', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
-         aiResponse = `I've switched the view to a 3D scatter plot using ${columns[0]}, ${columns[1]}, and ${columns[2]}.`;
-      } 
-      // Add more mock capabilities as needed
-      
-      addChatMessage({ role: 'assistant', content: aiResponse });
+      if (response.ok) {
+        let aiReply = result.reply;
+        let suggestionsList = undefined;
+        try {
+          const parsed = JSON.parse(aiReply);
+          if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].type === 'suggestion') {
+               aiReply = "I have some suggestions based on the analysis:";
+               suggestionsList = parsed;
+          }
+        } catch (e) {
+          // Keep raw string
+        }
+
+        const lowerQuery = userMsg.toLowerCase();
+        if (columns.length >= 3) {
+          if (lowerQuery.includes('scatter')) {
+             setChartConfig({ type: 'scatter', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
+          } else if (lowerQuery.includes('bar')) {
+             setChartConfig({ type: 'bar', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
+          } else if (lowerQuery.includes('line')) {
+             setChartConfig({ type: 'line', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
+          } else if (lowerQuery.includes('surface')) {
+             setChartConfig({ type: 'surface', xAxis: columns[0], yAxis: columns[1], zAxis: columns[2]});
+          }
+        }
+
+        addChatMessage({ role: 'assistant', content: aiReply, suggestions: suggestionsList });
+      } else {
+        addChatMessage({ role: 'assistant', content: `API Error: ${result.error}` });
+      }
+    } catch (error) {
+      addChatMessage({ role: 'assistant', content: 'Connection to API failed. Ensure Django server is running.' });
+    } finally {
       setIsAiThinking(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -61,6 +135,23 @@ export const AIChat: React.FC = () => {
                   : 'bg-slate-900/80 border-slate-700 text-slate-300 rounded-tl-none'}
               `}>
                 {msg.content}
+                
+                {msg.suggestions && msg.suggestions.length > 0 && (
+                  <div className="mt-4 flex flex-col gap-2">
+                    {msg.suggestions.map((s, idx) => (
+                      <div key={idx} className="bg-slate-800 p-3 rounded border border-neon-purple/40">
+                        <h4 className="font-bold text-neon-teal text-xs mb-1">{s.title}</h4>
+                        <p className="text-[10px] text-slate-400 mb-3">{s.description}</p>
+                        <button 
+                          onClick={() => handleQuickAction(s.action)}
+                          className="px-4 py-2 bg-neon-purple/20 hover:bg-neon-purple text-white text-xs rounded transition-all w-full uppercase tracking-wider font-bold shadow-[0_0_10px_rgba(168,85,247,0.2)]"
+                        >
+                          {s.actionLabel || 'Fix Now'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
