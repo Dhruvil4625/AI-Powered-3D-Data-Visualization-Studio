@@ -31,15 +31,22 @@ A unified interface to monitor active data pipelines, review computational healt
 - **Data Quality Report & Distribution Analysis**: Get detailed views of your dataset's variance, completeness, and skewness prior to 3D rendering.
 
 ### 3. Comprehensive 3D Chart Libraries
-Interact with your data using immersive web-based 3D graphics:
+Interact with your data using immersive web-based 3D graphics, built on top of a dynamic viewport normalizer that safely scales coordinates and metrics into the active WebGL rendering frustum:
 - **Scatter Charts**: High-density 3D cluster mapping for multivariate datasets and outlier detection.
 - **Bar Charts 3D**: Compare categorical magnitudes across a 3-dimensional plane.
 - **Line Graphs 3D**: Track temporal changes or continuous variables in physical space.
 - **Surface Plots**: Render complex mathematical surfaces to analyze topological terrains and regressions.
+- **Asset Library Engine**: Import, preview, and organize `.obj` and architectural assets through intuitive, interactive WebGL `<Canvas>` rendering stand-ins instead of static views.
 
-### 4. Collaboration & Asset Management
+### 4. Advanced Machine Learning Simulator
+Demonstrate the physical impact of data pipelines directly:
+- **Dynamic Training vs Testing Scoring:** The simulator outputs independent accuracy mapping separating structural tests vs trained weights.
+- **Variance-Sensitive Solvers:** Uses specifically configured `Ridge` and `Logistic Regression` algorithms to intentionally demonstrate performance degradation on "dirty" raw data.
+- **Impactful Dashboard Feedback:** When you utilize the Data Studio to interpolate NULLs or normalize variance, you immediately visually trace a massive "After Cleaning" statistical score surge, complete with generated **Confusion Matrix metrics**.
+- **Categorical & Numeric Mode Imputations**: Dynamically processes multi-modal statistics beyond raw numeric arrays.
+
+### 5. Collaboration & Asset Management
 - **Project Workspaces**: Seamless real-time collaboration with role-based access control (Owner, Editor, Viewer).
-- **Asset Library Browser**: Drag, drop, upload, and organize reference files, textures, and 3D architectural assets securely.
 - **Messaging Views**: Sync internal team communications, pipeline status, and discuss data anomalies natively in the app.
 
 ## Technical Architecture & Flow
