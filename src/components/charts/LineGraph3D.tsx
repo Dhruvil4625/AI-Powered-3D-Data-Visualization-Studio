@@ -12,13 +12,18 @@ export const LineGraph3D: React.FC = () => {
 
   // Generate points
   const points = useMemo(() => {
-    // Sort data for a contiguous line if requested, or just connect as they are
-    // Typically 3D line graphs map sequentially, so we just use the raw array order
+    const xValues = data.map(d => Number(d[chartConfig.xAxis] || 0));
+    const yValues = data.map(d => Number(d[chartConfig.yAxis] || 0));
+    const zValues = data.map(d => Number(d[chartConfig.zAxis] || 0));
+    const minX = Math.min(...xValues); const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues); const maxY = Math.max(...yValues);
+    const minZ = Math.min(...zValues); const maxZ = Math.max(...zValues);
+
     return data.map((d) => {
-        const xPos = Number(d[chartConfig.xAxis] || 0) * 0.5;
-        const yPos = Number(d[chartConfig.yAxis] || 0) * 0.5;
-        const zPos = Number(d[chartConfig.zAxis] || 0) * 0.5;
-        return new THREE.Vector3(xPos, yPos, zPos);
+        const nx = ((Number(d[chartConfig.xAxis] || 0) - minX) / (maxX - minX || 1) - 0.5) * 10;
+        const ny = ((Number(d[chartConfig.yAxis] || 0) - minY) / (maxY - minY || 1) - 0.5) * 10;
+        const nz = ((Number(d[chartConfig.zAxis] || 0) - minZ) / (maxZ - minZ || 1) - 0.5) * 10;
+        return new THREE.Vector3(nx, ny, nz);
     });
   }, [data, chartConfig]);
 
