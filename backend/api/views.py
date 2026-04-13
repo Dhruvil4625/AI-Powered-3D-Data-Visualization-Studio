@@ -88,15 +88,17 @@ def upload_data(request):
         cleaning_stats = calculate_cleaning_stats(df)
         numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
         
-        # Default coords
+        # Default coords without deleting original columns
         if len(numeric_cols) < 3:
             df['x'] = [i for i in range(len(df))]
-            if len(numeric_cols) > 0: df['y'] = df[numeric_cols[0]]
-            if len(numeric_cols) > 1: df['z'] = df[numeric_cols[1]]
+            df['y'] = df[numeric_cols[0]] if len(numeric_cols) > 0 else 0
+            df['z'] = df[numeric_cols[1]] if len(numeric_cols) > 1 else 0
         else:
-            df = df.rename(columns={numeric_cols[0]: 'x', numeric_cols[1]: 'y', numeric_cols[2]: 'z'})
+            df['x'] = df[numeric_cols[0]]
+            df['y'] = df[numeric_cols[1]]
+            df['z'] = df[numeric_cols[2]]
 
-# Save to DB
+        # Save to DB
         user = request.user if request.user.is_authenticated else None
         dataset = Dataset.objects.create(
             user=user,
@@ -183,7 +185,18 @@ def apply_fix(request):
         numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
 
         if action == 'interpolate_nulls':
+            # Interpolate numeric columns
             df[numeric_cols] = df[numeric_cols].interpolate(method='linear').fillna(0)
+            
+            # Fill categorical/string columns (like 'capital') with mode/most frequent value
+            categorical_cols = df.select_dtypes(exclude=['number']).columns.tolist()
+            for col in categorical_cols:
+                if df[col].isnull().any():
+                    mode_val = df[col].mode()
+                    if not mode_val.empty:
+                        df[col] = df[col].fillna(mode_val[0])
+                    else:
+                        df[col] = df[col].fillna("Unknown")
         elif action == 'normalize_variance':
             for col in numeric_cols:
                 if df[col].std() > 0:
@@ -225,8 +238,19 @@ def apply_fix(request):
         elif action == 'drop_nulls':
             df = df.dropna(subset=numeric_cols)
         elif action == 'impute_median':
+            # Median imputation for numeric
             for col in numeric_cols:
                 df[col] = df[col].fillna(df[col].median())
+                
+            # Mode imputation for non-numeric (e.g. 'capital')
+            categorical_cols = df.select_dtypes(exclude=['number']).columns.tolist()
+            for col in categorical_cols:
+                if df[col].isnull().any():
+                    mode_val = df[col].mode()
+                    if not mode_val.empty:
+                        df[col] = df[col].fillna(mode_val[0])
+                    else:
+                        df[col] = df[col].fillna("Unknown")
         
         # Save updated file
         csv_content = df.to_csv(index=False)
@@ -274,10 +298,11 @@ def evaluate_ml(request):
         return JsonResponse({
             'status': task.status,
             'task_id': task.id,
-            'train_score': task.result.get('score') if task.result else None,
-            'test_score': task.result.get('score') if task.result else None,
+            'train_score': task.result.get('train_score') if task.result else None,
+            'test_score': task.result.get('test_score') if task.result else None,
             'fit_status': task.result.get('model_type') if task.result else None,
             'target_col': task.result.get('target') if task.result else None,
+            'confusion_matrix': task.result.get('confusion_matrix') if task.result else None,
             'message': 'ML Training completed successfully'
         }, status=200)
         
