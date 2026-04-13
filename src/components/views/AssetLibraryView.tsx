@@ -1,5 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { useAppStore } from '../../store/useAppStore';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Float, Center, Sphere, MeshDistortMaterial } from '@react-three/drei';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 type AssetType = 'DATASET' | '3D MODEL' | 'PRESET' | 'ARCHIVE';
@@ -489,14 +491,50 @@ export const AssetLibraryView: React.FC = () => {
 
           {/* Asset Preview */}
           <div className="glass-panel rounded-xl overflow-hidden">
-            <div className="relative aspect-square group">
-              <img
-                alt="Asset Preview"
-                className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
-                src={selectedAsset?.previewUrl}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
+            <div className="relative aspect-square group bg-surface-container-lowest">
+              {selectedAsset?.type === '3D MODEL' ? (
+                <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-700">
+                  <Canvas camera={{ position: [0, 0, 4.5], fov: 45 }}>
+                    <ambientLight intensity={0.2} />
+                    <pointLight position={[10, 10, 10]} intensity={2.5} color="#00e5ff" />
+                    <pointLight position={[-10, -10, -10]} intensity={3.0} color="#a855f7" />
+                    <OrbitControls autoRotate autoRotateSpeed={3.0} enableZoom={true} enablePan={false} />
+                    <Center>
+                      <Float speed={3} rotationIntensity={1.5} floatIntensity={1.5}>
+                        <Sphere args={[1.2, 64, 64]}>
+                          <MeshDistortMaterial
+                            color="#10141a"
+                            attach="material"
+                            distort={0.5}
+                            speed={3}
+                            roughness={0.1}
+                            metalness={1.0}
+                            emissive="#7000ff"
+                            emissiveIntensity={0.4}
+                            wireframe
+                          />
+                        </Sphere>
+                      </Float>
+                    </Center>
+                  </Canvas>
+                </div>
+              ) : selectedAsset?.type === 'PRESET' ? (
+                <div className="w-full h-full opacity-80 group-hover:scale-105 transition-transform duration-700 bg-gradient-to-br from-[#7000ff] via-[#0a0e14] to-[#00e5ff] relative">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#10141a_100%)] opacity-80"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-6xl text-white/20">palette</span>
+                  </div>
+                </div>
+              ) : (
+                <img
+                  alt="Asset Preview"
+                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                  src={selectedAsset?.previewUrl}
+                  onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'; }}
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
                 <span className="text-[9px] text-primary uppercase font-label tracking-widest">Selected Asset</span>
                 <h4 className="text-lg font-headline font-bold text-white leading-tight">{selectedAsset?.name?.split('.').slice(0, -1).join('.')}</h4>
                 <div className="flex items-center gap-4 mt-1.5">
@@ -615,12 +653,54 @@ export const AssetLibraryView: React.FC = () => {
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center"
           onClick={() => setFullscreenOpen(false)}
         >
-          <img
-            alt="Fullscreen Preview"
-            src={selectedAsset?.previewUrl}
-            className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          />
+          {selectedAsset?.type === '3D MODEL' ? (
+            <div 
+              className="w-[90vw] h-[85vh] rounded-xl shadow-2xl relative bg-surface-container-lowest"
+              onClick={e => e.stopPropagation()}
+            >
+              <Canvas camera={{ position: [0, 0, 4.5], fov: 45 }}>
+                <ambientLight intensity={0.2} />
+                <pointLight position={[10, 10, 10]} intensity={2.5} color="#00e5ff" />
+                <pointLight position={[-10, -10, -10]} intensity={3.0} color="#a855f7" />
+                <OrbitControls autoRotate autoRotateSpeed={3.0} enableZoom={true} enablePan={false} />
+                <Center>
+                  <Float speed={3} rotationIntensity={1.5} floatIntensity={1.5}>
+                    <Sphere args={[1.2, 64, 64]}>
+                      <MeshDistortMaterial
+                        color="#10141a"
+                        attach="material"
+                        distort={0.5}
+                        speed={3}
+                        roughness={0.1}
+                        metalness={1.0}
+                        emissive="#7000ff"
+                        emissiveIntensity={0.4}
+                        wireframe
+                      />
+                    </Sphere>
+                  </Float>
+                </Center>
+              </Canvas>
+            </div>
+          ) : selectedAsset?.type === 'PRESET' ? (
+            <div 
+              className="w-[90vw] h-[85vh] rounded-xl shadow-2xl relative bg-gradient-to-br from-[#7000ff] via-[#0a0e14] to-[#00e5ff] overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#10141a_100%)] opacity-80"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="material-symbols-outlined text-9xl text-white/20">palette</span>
+              </div>
+            </div>
+          ) : (
+            <img
+              alt="Fullscreen Preview"
+              src={selectedAsset?.previewUrl}
+              className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-2xl"
+              onClick={e => e.stopPropagation()}
+              onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000'; }}
+            />
+          )}
           <button
             onClick={() => setFullscreenOpen(false)}
             className="absolute top-5 right-5 w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center hover:bg-error hover:text-white transition-all"
