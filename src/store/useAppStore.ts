@@ -42,6 +42,7 @@ export interface MLEvaluation {
   test_score?: number;
   fit_status?: string;
   target_col?: string;
+  confusion_matrix?: number[][];
 }
 
 export type DataCell = string | number | boolean | null | undefined;
