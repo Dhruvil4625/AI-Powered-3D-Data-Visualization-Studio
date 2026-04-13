@@ -22,6 +22,13 @@ export const SurfacePlot: React.FC = () => {
         const vertex = new THREE.Vector3();
 
         // Very basic interpolation heuristic mapping scatter to plane vertices nearest to them.
+        const xValues = data.map(d => Number(d[chartConfig.xAxis] || 0));
+        const yValues = data.map(d => Number(d[chartConfig.yAxis] || 0));
+        const zValues = data.map(d => Number(d[chartConfig.zAxis] || 0));
+        const minX = Math.min(...xValues); const maxX = Math.max(...xValues);
+        const minY = Math.min(...yValues); const maxY = Math.max(...yValues);
+        const minZ = Math.min(...zValues); const maxZ = Math.max(...zValues);
+
         for (let i = 0; i < posAttribute.count; i++) {
             vertex.fromBufferAttribute(posAttribute, i);
             
@@ -31,18 +38,18 @@ export const SurfacePlot: React.FC = () => {
             
             for(let j = 0; j < Math.min(data.length, 100); j++) {
                 const d = data[j];
-                const dx = Number(d[chartConfig.xAxis] || 0) * 0.5 - 2.5; // Offset logic
-                const dz = Number(d[chartConfig.zAxis] || 0) * 0.5 - 2.5;
-                const dy = Number(d[chartConfig.yAxis] || 0) * 0.5;
+                const nx = ((Number(d[chartConfig.xAxis] || 0) - minX) / (maxX - minX || 1) - 0.5) * 10;
+                const ny = ((Number(d[chartConfig.yAxis] || 0) - minY) / (maxY - minY || 1) - 0.5) * 10;
+                const nz = ((Number(d[chartConfig.zAxis] || 0) - minZ) / (maxZ - minZ || 1) - 0.5) * 10;
 
-                const dist = Math.sqrt((vertex.x - dx)**2 + (vertex.z - dz)**2);
+                const dist = Math.sqrt((vertex.x - nx)**2 + (vertex.z - nz)**2);
                 if (dist < 0.001) {
-                    totalHeight = dy;
+                    totalHeight = ny;
                     totalWeight = 1;
                     break;
                 }
                 const weight = 1 / (dist**2);
-                totalHeight += dy * weight;
+                totalHeight += ny * weight;
                 totalWeight += weight;
             }
 
