@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../store/useAppStore';
 import { Brain, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -9,6 +9,44 @@ export const DataQualityReportView: React.FC = () => {
   const { data, columns, cleaningStats, initialCleaningStats, datasetId, token, currentMl, setCurrentMl } = useAppStore();
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [taskId, setTaskId] = useState<string | null>(null);
+
+  const numericCols = useMemo(() => {
+    if (!data || !data.length) return [];
+    return columns.filter(c => isFinite(Number(data[0][c])));
+  }, [data, columns]);
+
+  const scatterPoints = useMemo(() => {
+    if (!data || numericCols.length < 2) return null;
+    const xCol = numericCols[0];
+    const yCol = numericCols[1];
+    
+    const xs = data.map(d => Number(d[xCol])).filter(n => isFinite(n));
+    const ys = data.map(d => Number(d[yCol])).filter(n => isFinite(n));
+    if (!xs.length || !ys.length) return null;
+    
+    const minX = Math.min(...xs); const maxX = Math.max(...xs);
+    const minY = Math.min(...ys); const maxY = Math.max(...ys);
+    
+    // Sample max 300 pts for performance
+    const step = Math.max(1, Math.floor(data.length / 300));
+    const pts = [];
+    for (let i = 0; i < data.length; i += step) {
+        const xVal = Number(data[i][xCol]);
+        const yVal = Number(data[i][yCol]);
+        if (!isFinite(xVal) || !isFinite(yVal)) continue;
+        
+        // Basic outlier calculation (e.g. falls in the outer 10% bounds)
+        const isOutlier = Math.abs(xVal - ((maxX + minX)/2)) > ((maxX-minX)/2 * 0.9) || 
+                          Math.abs(yVal - ((maxY + minY)/2)) > ((maxY-minY)/2 * 0.9);
+
+        // Calculate clamped percentages
+        const xPct = Math.max(2, Math.min(98, ((xVal - minX) / (maxX - minX || 1)) * 100));
+        const yPct = Math.max(2, Math.min(98, ((yVal - minY) / (maxY - minY || 1)) * 100));
+
+        pts.push({ x: xPct, y: yPct, isOutlier });
+    }
+    return pts;
+  }, [data, numericCols]);
 
   useEffect(() => {
     let interval: ReturnType<typeof setTimeout>;
@@ -22,10 +60,11 @@ export const DataQualityReportView: React.FC = () => {
           if (result.status === 'completed') {
             setCurrentMl({
               status: 'completed',
-              train_score: result.result.score,
-              test_score: result.result.score,
+              train_score: result.result.train_score,
+              test_score: result.result.test_score,
               fit_status: result.result.model_type,
-              target_col: result.result.target
+              target_col: result.result.target,
+              confusion_matrix: result.result.confusion_matrix
             });
             setIsEvaluating(false);
             setTaskId(null);
@@ -156,6 +195,29 @@ export const DataQualityReportView: React.FC = () => {
             <CheckCircle2 className="w-3 h-3" />
             <span>MODEL VALIDATED: {currentMl.fit_status} &rarr; Predicting: {currentMl.target_col}</span>
           </div>
+          
+          {currentMl.confusion_matrix && (
+            <div className="mt-4 pt-4 border-t border-slate-700/50">
+              <span className="text-[0.65rem] text-slate-400 block mb-2">CONFUSION MATRIX (3x3 SAMPLE)</span>
+              <div className="grid grid-cols-3 gap-1">
+                {currentMl.confusion_matrix.map((row, i) => 
+                  row.map((cell, j) => {
+                    const isDiag = i === j;
+                    const maxVal = Math.max(...currentMl.confusion_matrix!.flat());
+                    const intensity = Math.max(0.1, cell / (maxVal || 1));
+                    return (
+                      <div key={`${i}-${j}`} 
+                        className={`flex items-center justify-center text-[0.65rem] font-mono py-1 rounded ${isDiag ? 'text-neon-cyan font-bold' : 'text-slate-400'}`}
+                        style={{ background: isDiag ? `rgba(0, 229, 255, ${intensity * 0.3})` : `rgba(255, 255, 255, ${intensity * 0.05})` }}
+                      >
+                        {cell}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          )}
         </div>
       );
     }
@@ -389,19 +451,26 @@ export const DataQualityReportView: React.FC = () => {
 {/* Outlier Detection Panel (Large Wide Card) */}
 <div className="col-span-12 glass-panel p-8 rounded-xl">
 <div className="flex flex-col md:flex-row gap-8">
-{/* Scatter Plot Visualization (Decorative) */}
+{/* Scatter Plot Visualization (Dynamic) */}
 <div className="w-full md:w-1/3 aspect-square bg-surface-container-lowest rounded-lg border border-primary/5 relative p-4 overflow-hidden">
 <div className="absolute inset-0 flex items-center justify-center opacity-10">
-<div className="w-full h-[1px] bg-primary"></div>
-<div className="h-full w-[1px] bg-primary"></div>
+<div className="w-full h-[1px] bg-primary relative"><span className="absolute right-2 -top-4 text-[0.45rem] font-bold tracking-widest">{numericCols[0] ?? 'X'}</span></div>
+<div className="h-full w-[1px] bg-primary relative"><span className="absolute top-2 left-2 text-[0.45rem] font-bold tracking-widest">{numericCols[1] ?? 'Y'}</span></div>
 </div>
-{/* Mock Data Points */}
-<div className="absolute top-[20%] left-[30%] w-2 h-2 rounded-full bg-primary/40"></div>
-<div className="absolute top-[25%] left-[35%] w-1.5 h-1.5 rounded-full bg-primary/40"></div>
-<div className="absolute top-[22%] left-[32%] w-2 h-2 rounded-full bg-primary/40"></div>
-<div className="absolute top-[80%] left-[75%] w-3 h-3 rounded-full bg-error health-glow border border-error"></div>
-<div className="absolute top-[10%] left-[85%] w-2 h-2 rounded-full bg-tertiary/60 border border-tertiary"></div>
-<div className="absolute bottom-4 left-4 text-[0.5rem] font-bold text-primary/40 tracking-[0.3em] uppercase">Distribution Map V1</div>
+{/* Data Points */}
+{scatterPoints ? (
+  scatterPoints.map((pt, i) => (
+    <div key={i} 
+         className={`absolute rounded-full transition-all duration-1000 ${pt.isOutlier ? 'w-2.5 h-2.5 bg-error health-glow border border-error z-10' : 'w-1 h-1 bg-primary/60 opacity-60 hover:w-2 hover:h-2 hover:bg-white hover:opacity-100 z-0 cursor-pointer'}`}
+         style={{ left: `${pt.x}%`, bottom: `${pt.y}%`, transform: 'translate(-50%, 50%)' }}
+    />
+  ))
+) : (
+  <div className="text-on-surface-variant/30 text-[0.6rem] absolute inset-0 flex items-center justify-center text-center px-4">
+    No continuous numeric columns available for projection.
+  </div>
+)}
+<div className="absolute bottom-4 left-4 text-[0.5rem] font-bold text-primary/80 tracking-[0.3em] uppercase">Distribution Map V2</div>
 </div>
 {/* Outlier List */}
 <div className="flex-1">
