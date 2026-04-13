@@ -25,7 +25,7 @@ def root_view(request):
     return JsonResponse({
         "status": "Observation Core Active",
         "version": "1.0.0",
-        "message": "AI-Powered 3D Data Visualization Studio Backend is running."
+        "message": "Kinetic Observatory: AI Spatial DataOps Backend is running."
     })
 
 def favicon_view(request):
