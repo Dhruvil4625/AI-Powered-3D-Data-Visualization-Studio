@@ -576,6 +576,29 @@ export const DataStudioView: React.FC = () => {
                           </div>
                         </div>
                       ))}
+                      
+                      {baselineMl.confusion_matrix && (
+                        <div className="mt-4 pt-4 border-t border-white/5">
+                          <span className="text-on-surface-variant/60 uppercase tracking-wider text-[10px] font-medium mb-2 block">Confusion Matrix</span>
+                          <div className="grid grid-cols-3 gap-1">
+                            {baselineMl.confusion_matrix.map((row, i) => 
+                              row.map((cell, j) => {
+                                const isDiag = i === j;
+                                const maxVal = Math.max(...baselineMl.confusion_matrix!.flat());
+                                const intensity = Math.max(0.1, cell / (maxVal || 1));
+                                return (
+                                  <div key={`${i}-${j}`} 
+                                    className={`flex items-center justify-center text-[10px] font-mono py-1.5 rounded ${isDiag ? 'text-neon-cyan font-bold' : 'text-on-surface-variant/50'}`}
+                                    style={{ background: isDiag ? `rgba(0, 229, 255, ${intensity * 0.3})` : `rgba(255, 255, 255, ${intensity * 0.1})` }}
+                                  >
+                                    {cell}
+                                  </div>
+                                );
+                              })
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -605,6 +628,29 @@ export const DataStudioView: React.FC = () => {
                           </div>
                         </div>
                       ))}
+
+                      {currentMl.confusion_matrix && (
+                        <div className="mt-4 pt-4 border-t border-white/5">
+                          <span className="text-on-surface-variant/60 uppercase tracking-wider text-[10px] font-medium mb-2 block">Confusion Matrix</span>
+                          <div className="grid grid-cols-3 gap-1">
+                            {currentMl.confusion_matrix.map((row, i) => 
+                              row.map((cell, j) => {
+                                const isDiag = i === j;
+                                const maxVal = Math.max(...currentMl.confusion_matrix!.flat());
+                                const intensity = Math.max(0.1, cell / (maxVal || 1));
+                                return (
+                                  <div key={`${i}-${j}`} 
+                                    className={`flex items-center justify-center text-[10px] font-mono py-1.5 rounded ${isDiag ? 'text-purple-300 font-bold' : 'text-on-surface-variant/50'}`}
+                                    style={{ background: isDiag ? `rgba(168, 85, 247, ${intensity * 0.3})` : `rgba(255, 255, 255, ${intensity * 0.1})` }}
+                                  >
+                                    {cell}
+                                  </div>
+                                );
+                              })
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                     {currentMl.reason && (
                       <p className="text-[11px] text-on-surface-variant/60 leading-relaxed pt-2 border-t relative" style={{ borderColor: 'rgba(195,245,255,0.06)' }}>
